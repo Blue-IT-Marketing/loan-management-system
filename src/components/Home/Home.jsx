@@ -7,7 +7,7 @@ export default function Home (){
       <Fragment>
         <div className='box box-body'>
           <div className='box-header'>
-            <h3 className='box-title'> Loan Management System </h3>
+            <h3 className='box-title'> SA-Loans </h3>
           </div>
             
 

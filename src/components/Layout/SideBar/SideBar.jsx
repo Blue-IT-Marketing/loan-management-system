@@ -18,7 +18,7 @@ export default function SideBar (){
                  
           <div className="user-panel">
               <div className="pull-left image">
-                  <img src="" id="strSideUserImageID" className="img-circle" alt="Loan-Management-System" />
+                  <img src="" id="strSideUserImageID" className="img-circle" alt="SA-Loans" />
               </div>
                 <div className="pull-left info">
                   <p id="strSideUserNameID"><Link to={routes.login_page}>Please Login</Link></p>

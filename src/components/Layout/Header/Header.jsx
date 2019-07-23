@@ -15,12 +15,12 @@ function Header(props) {
             <Fragment>
                 <header className="main-header">                    
                     <Link to={routes.home_page} className="logo">                    
-                        <span className="logo-mini"><b>LM</b>-S</span>                    
-                        <span className="logo-lg"><b>Loan Management</b> System</span>
+                        <span className="logo-mini"><b>SA</b>-L</span>                    
+                        <span className="logo-lg"><b>South African</b> Loans</span>
                     </Link>                    
                     <nav className="navbar navbar-static-top">                    
                         <a to="#" className="sidebar-toggle" data-toggle="offcanvas" data-target="sidebar-menu" role="button" onClick={SidebarCollapse()}>
-                            <span className="sr-only">LM-System</span>
+                            <span className="sr-only">SA-Loans</span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
