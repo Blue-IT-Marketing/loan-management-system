@@ -6,7 +6,7 @@ import {routes} from '../../../constants';
 const SideBarMenuAuth = () => {
     return (
         <ul className="sidebar-menu">
-            <li className="header">B-Feather</li>
+            <li className="header">M-Finance</li>
             <li><Link to={routes.home_page} title="Big feather Music Portal"><i className="fa fa-home"></i> <strong>Home</strong></Link></li>
             <li><Link to={routes.about_page} title="About"><i className="fa fa-info"></i> <strong>About</strong></Link></li>
             <li><Link to={routes.contact_page} title="Contact Us"><i className="fa fa-envelope"></i> <strong>Contact</strong></Link></li>
@@ -32,7 +32,7 @@ const SideBarMenuAuth = () => {
 const SideBarMenuNonAuth = () => {
     return (
     <ul className="sidebar-menu">
-        <li className="header">B-Feather</li>
+        <li className="header">M-Finance</li>
             <li className="active treeview">
                 <ul className="treeview-menu">
                     <li><Link to={routes.home_page} title="Big feather Music Portal"><i className="fa fa-home"></i> Home</Link></li>
