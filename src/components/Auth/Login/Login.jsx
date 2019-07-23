@@ -7,6 +7,10 @@ export default function Login() {
     function HandleSubmit(e){
         e.preventDefault();
         console.log('Handling Submit form');
+        // capture loginname and password
+        // check for errors
+        // dispatch an action to login the user
+        dispatch({type:'login-user',data:{}})
     }
     
     return (
@@ -19,13 +23,13 @@ export default function Login() {
                 <div className='box-footer'>                
                     <form className='form-horizontal' onSubmit={e => HandleSubmit(e)}>
                         <div className='form-group'>                            
-                            <input type='text' className='form-control' name='loginName' placeholder='Login Name' />
+                            <input type='text' className='form-control' name='loginname' placeholder='Login Name' />
                         </div>
                         <div className='form-group'>                            
                             <input type='password' className='form-control' name='password' placeholder='Password' />
                         </div>
                         <div className='form-group'>
-                            <button type='submit' className='btn btn-success btn-lg'><strong> <i className='fa fa-sign-in'> </i> Login </strong></button>
+                            <button type='submit' className='btn btn-success btn-lg' onClick={e => HandleSubmit(e)}><strong> <i className='fa fa-sign-in'> </i> Login </strong></button>
                             <button type='reset' className='btn btn-primary btn-lg'><strong> <i className='fa fa-eraser'> </i> Cancel </strong></button>
                             <Link to={routes.forget_password_page}><button type='button' className='btn btn-warning btn-lg'><strong> <i className='fa fa-unlock'> </i> Forget Password </strong></button></Link>
                         </div>

@@ -34,3 +34,8 @@ export const chat = '/chat';
 export const employee_admin = '/employees/admin';
 
 
+////////////////////////// firebase services endpoints //////////////////
+
+
+
+
