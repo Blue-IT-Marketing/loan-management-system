@@ -21,6 +21,7 @@ export const register_employee = '/admin/employees/register';
 
 export const leads = '/leads';
 
+
 export const loans = '/loans';
 
 export const loan_payments = '/loans/payments';

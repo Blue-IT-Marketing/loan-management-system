@@ -6,8 +6,8 @@ import {routes} from '../../../constants';
 const SideBarMenuAuth = () => {
     return (
         <ul className="sidebar-menu">
-            <li className="header">M-Finance</li>
-            <li><Link to={routes.home_page} title="Big feather Music Portal"><i className="fa fa-home"></i> <strong>Home</strong></Link></li>
+            <li className="header">LM-System</li>
+            <li><Link to={routes.home_page} title="Loan Management System"><i className="fa fa-home"></i> <strong>Home</strong></Link></li>
             <li><Link to={routes.about_page} title="About"><i className="fa fa-info"></i> <strong>About</strong></Link></li>
             <li><Link to={routes.contact_page} title="Contact Us"><i className="fa fa-envelope"></i> <strong>Contact</strong></Link></li>
             <li className="active treeview">
@@ -19,11 +19,9 @@ const SideBarMenuAuth = () => {
                 </Link>
                 <ul className="treeview-menu">
                     <li><Link to={routes.admin_page} title="manage your Account"><i className="fa fa-sign-in"> </i> <strong> Account</strong> </Link> </li>                    
-                    <li><Link to={routes.music_page} title=""><i className="fa fa-soundcloud"> </i> <strong>Music</strong></Link></li>
-                    <li><Link to={routes.vidoes_page} title=""><i className="fa fa-youtube"> </i> <strong>Videos</strong></Link></li>
                 </ul>
             </li>
-            <li><Link to={routes.blog_page} title="Bulk Messaging &amp; Contact Management Blog"><i className="fa fa-book"> </i> <strong>Blog</strong></Link></li>
+            <li><Link to={routes.blog_page} title="Loan Management System Blog"><i className="fa fa-book"> </i> <strong>Blog</strong></Link></li>
             <li><Link to={routes.dashboard_page} title="Dashboard"><i className="fa fa-dashboard"> </i> <strong>Dashboard</strong></Link></li>
         </ul>        
     )
@@ -32,16 +30,14 @@ const SideBarMenuAuth = () => {
 const SideBarMenuNonAuth = () => {
     return (
     <ul className="sidebar-menu">
-        <li className="header">M-Finance</li>
+        <li className="header">LM-System</li>
             <li className="active treeview">
                 <ul className="treeview-menu">
-                    <li><Link to={routes.home_page} title="Big feather Music Portal"><i className="fa fa-home"></i> Home</Link></li>
+                    <li><Link to={routes.home_page} title="Loan Management System"><i className="fa fa-home"></i> Home</Link></li>
                     <li><Link to={routes.about_page} title="Contact Us"><i className="fa fa-info"></i> About</Link></li>
                     <li><Link to={routes.contact_page} title="Contact Us"><i className="fa fa-envelope"></i> Contact</Link></li>
-                    <li><Link to={routes.blog_page} title="Bulk Messaging &amp; Contact Management Blog"><i className="fa fa-book"> </i> <strong>Blog</strong></Link></li>
-                    <li><Link to={routes.music_page} title=""><i className="fa fa-soundcloud"> </i> <strong>Music</strong></Link></li>
-                    <li><Link to={routes.vidoes_page} title=""><i className="fa fa-youtube"> </i> <strong>Videos</strong></Link></li>
-                    <li><Link to={routes.login_page} title="Login to Big Feather"><i className="fa fa-sign-in"> </i> Login </Link></li>
+                    <li><Link to={routes.blog_page} title="Loan Management System Blog"><i className="fa fa-book"> </i> <strong>Blog</strong></Link></li>
+                    <li><Link to={routes.login_page} title="Login"><i className="fa fa-sign-in"> </i> Login </Link></li>
                 </ul>
             </li>
     </ul>   

@@ -6,7 +6,7 @@ export {
 };
 
 
-export const app_name = 'Big feather music portal';
+export const app_name = 'Loan Management System';
 
 
 
