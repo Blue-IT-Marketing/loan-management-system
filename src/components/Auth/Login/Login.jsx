@@ -10,9 +10,8 @@ export default function Login() {
         // capture loginname and password
         // check for errors
         // dispatch an action to login the user
-        dispatch({type:'login-user',data:{}})
-    }
-    
+        // dispatch({type:'login-user',data:{}})
+    }    
     return (
         <Fragment>
             <div className='box box-body'>

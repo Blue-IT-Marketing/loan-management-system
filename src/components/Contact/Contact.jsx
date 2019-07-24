@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,Component } from 'react';
 
 
 export default function Contact() {
@@ -17,16 +17,12 @@ export default function Contact() {
     return (
         <Fragment>            
             <div className='box box-body'>
-
                 <div className='box-header'>
                     <h3 className='box-title'>Contact</h3>
                 </div>
-
-
                 <div className='box-footer'>
                     <form className='form-horizontal' onSubmit={e => SubmitHandler(e)}>
                         <div className='form-group'>
-
                             <input
                                 type='text'
                                 className='form-control' 
@@ -36,7 +32,6 @@ export default function Contact() {
                         </div>
 
                         <div className='form-group'>
-
                             <input 
                                 type='text' 
                                 className='form-control' 
@@ -51,7 +46,6 @@ export default function Contact() {
                                 className='form-control'
                                 name='cell'
                                 placeholder='Cell'
-
                             />
                         </div>
 
@@ -74,22 +68,22 @@ export default function Contact() {
                         </div>
 
                         <div className='form-group'>
-
                             <textarea
                                 name='message'
                                 placeholder='Message...'
-                                className='form-control'
-                            ></textarea>
+                                className='form-control'>
+                            </textarea>
                         </div>
 
                         <div className='form-group'>
-                            <button className='btn btn-success btn-block btn-lg'><strong> Send Message</strong></button>
+                            <button 
+                                className='btn btn-success btn-block btn-lg'
+                            >
+                                <strong> Send Message</strong>
+                            </button>
                         </div>
-
                     </form>
-
                 </div>
-
             </div>
 
         </Fragment>
