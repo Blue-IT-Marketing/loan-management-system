@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { Fragment, useState } from 'react';
 import {Utils} from '../../utilities';
 import InlineError from '../Forms/InlineError';
@@ -329,6 +330,7 @@ const PhysicalAddress = () => {
 	} = physical_address;
 
 	const onCheckErrors = async e => {
+		let isError = false;
 		console.log(e);
 		const check_stand = () => {		
 			if(Utils.isEmpty(stand)){
@@ -380,9 +382,30 @@ const PhysicalAddress = () => {
 			}
 			return false;
 		};
-		
+
+		if(await check_stand()){
+			isError = true;
+		}
+		if(await check_street()){
+			isError = true;
+		}
+		if(await check_city()){
+			isError = true;
+		}
+		if(await check_province()){
+			isError = true;
+		}
+		if(await check_postal_code()){
+			isError = true;
+		}
+
+		return isError;
+
 	};
 
+	const onSavePhysicalAddress = async e => {
+
+	}
 	return (
 		<Fragment>
 			<form className="form-horizontal">
@@ -403,6 +426,7 @@ const PhysicalAddress = () => {
 							value={stand}
 							onChange={e => onChangeHandler(e)}
 						/>
+						{errors.stand_error ? <InlineError message={errors.stand_error} /> :'' }
 					</div>
 					<div className="form-group">
 						<input
@@ -413,6 +437,7 @@ const PhysicalAddress = () => {
 							value={street_name}
 							onChange={e => onChangeHandler(e)}
 						/>
+						{errors.street_name_error ? <InlineError message={errors.street_name_error}/> :''}
 					</div>
 					<div className="form-group">
 						<input
@@ -423,6 +448,7 @@ const PhysicalAddress = () => {
 							value={city}
 							onChange={e => onChangeHandler(e)}
 						/>
+						{errors.city_error ? <InlineError message={errors.city_error}/> :''}
 					</div>
 					<div className="form-group">
 						<select
@@ -441,6 +467,7 @@ const PhysicalAddress = () => {
 							<option value="northerncape">Northern Cape</option>
 							<option value="freestate">Free State</option>
 						</select>
+						{errors.province_error ? <InlineError message={errors.province_error}/> :''}
 					</div>
 					<div className="form-group">
 						<input
@@ -451,6 +478,7 @@ const PhysicalAddress = () => {
 							value={country}
 							onChange={e => onChangeHandler(e)}
 						/>
+						{errors.country_error ? <InlineError message={errors.country_error}/> :''}
 					</div>
 					<div className="form-group">
 						<input
@@ -461,26 +489,54 @@ const PhysicalAddress = () => {
 							value={postal_code}
 							onChange={e => onChangeHandler(e)}
 						/>
+						{errors.postal_code_error ? <InlineError message={errors.postal_code_error}/> :''}
 					</div>
 					<div className='form-group'>
 						<button
 							type='button'
-							className='btn btn-success'
+							className='btn btn-success btn-lg'
 							name='save'
 							onClick={e => {
 								onCheckErrors().then(result => {
 									if(result){
 										throw new Error('there was an error processing form');
 									}else{
-
+										onSavePhysicalAddress(e);
 									}
-								})
+								}).catch(error => {
+									console.log(error);
+									setInline({message:error.message,message_type:'error'});
+								});
 							}}
 						>
+							<strong>
+								<i className='fa fa-save'> </i> {' '}
+								Save
+							</strong>
+
+						</button>
+
+						<button
+							type='button'
+							className='btn btn-warning btn-lg'
+							name='reset'
+							onClick={() => {
+								setInline({message:'',message_type:'INFO'});
+								setErrors(physical_address_errors_init);
+								setPhysicalAddress(physical_address_init);
+							}}
+						>
+							<strong>
+								<i className='fa fa-eraser'> </i>
+								{' '} Reset
+							</strong>
 
 						</button>
 					</div>
-							</div>
+					<div className='form-group'>
+						{inline.message ? <InlineMessage message={inline.message} message_type={inline.message_type}/> :''}
+					</div>
+				</div>
 			</form>
 	</Fragment>
 	);
