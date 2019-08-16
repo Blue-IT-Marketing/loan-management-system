@@ -1,43 +1,49 @@
-import React, { Fragment } from 'react'
-import './Profile.css';
+import React, { Fragment,useState } from 'react'
+import UploadMusic from './UploadMusic';
+import UploadVideos from './UploadVideos';
 
 export default function Profile (){
-  return (
-      <Fragment>
-          <div className='Profile'>
-                <h3>Profile</h3>
+	const[display,setDisplay] = useState('upload-music');
+	return (
+    <Fragment>
+      <div className="box box-body">
+        <div className="box box-header">
+          <h3 className="box-title">
+            <strong>
+              {" "}
+              <i className="fa fa-user"> </i> Profile Manager
+            </strong>
+          </h3>
 
-                <div className='box-footer'>
-
-                  <form className='form-horizontal'>
-                    <div className='form-group'>
-                      <label>Names </label>
-                      <input type='text' className='form-control' name='names' value={''} />
-                    </div>
-
-                    <div className='form-group'>
-                      <label>Surname </label>
-                      <input type='text' className='form-control' name='surname' value={''} />
-                    </div>
-
-                    <div className='form-group'>
-                      <label>Cell </label>
-                      <input type='text' className='form-control' name='cell' value={''} />
-                    </div>
-
-                    <div className='form-group'>
-                      <label>Email </label>
-                      <input type='email' className='form-control' name='email' value={''} />
-                    </div>
-
-                    <div className='form-group'>
-                      <button className='btn btn-success btn-lg' name='update'><strong>Update</strong></button>
-                    </div>
-                  </form>
-                </div>
-
+          <div className="box-tools">
+            <button
+              type="button"
+              className="btn btn-box-tool"
+              name="upload-music"
+              onClick={() => setDisplay("upload-music")}
+            >
+              <strong>
+                <i className="fa fa-soundcloud"> </i>
+                Upload Music
+              </strong>
+            </button>
+            <button
+              type="button"
+              className="btn btn-box-tool"
+              name="upload-videos"
+              onClick={() => setDisplay("upload-videos")}
+            >
+              <strong>
+                <i className="fa fa-youtube-play"> </i>
+                Upload Videos
+              </strong>
+            </button>
           </div>
+        </div>
 
-      </Fragment>
-  )
+        {display === "upload-music" ? <UploadMusic /> : ""}
+        {display === "upload-videos" ? <UploadVideos /> : ""}
+      </div>
+    </Fragment>
+  );
 }

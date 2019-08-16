@@ -1,92 +1,52 @@
-import React, { Fragment,Component } from 'react';
+import React, { Fragment,useState } from 'react';
+import ThisContactForm from './ThisContactForm';
+import ContactDetails from './ContactDetails';
 
 
 export default function Contact() {
+	const[display,setDisplay] = useState('contact-details');
 
+	let ResetDefault = e => {
+		if (e.target.value === 'Message...') {
+			e.target.value = '';
+		}
+	};
 
-    let ResetDefault = e => {
-        if (e.target.value === 'Message...') {
-            e.target.value = ''
-        }
-    }
-
-    let SubmitHandler = e => {
-        e.preventDefault();
-        console.log('Submitting Contact Form')
-    }
-    return (
-        <Fragment>            
-            <div className='box box-body'>
-                <div className='box-header'>
-                    <h3 className='box-title'>Contact</h3>
-                </div>
-                <div className='box-footer'>
-                    <form className='form-horizontal' onSubmit={e => SubmitHandler(e)}>
-                        <div className='form-group'>
-                            <input
-                                type='text'
-                                className='form-control' 
-                                name='names' 
-                                placeholder='Names' 
-                            />
-                        </div>
-
-                        <div className='form-group'>
-                            <input 
-                                type='text' 
-                                className='form-control' 
-                                name='surname'
-                                placeholder='Surname' 
-                            />
-                        </div>
-
-                        <div className='form-group'>
-                            <input
-                                type='text'
-                                className='form-control'
-                                name='cell'
-                                placeholder='Cell'
-                            />
-                        </div>
-
-                        <div className='form-group'>
-                            <input 
-                                type='email'
-                                className='form-control'
-                                name='email'
-                                placeholder='Email'
-                            />                        
-                        </div>
-
-                        <div className='form-group'>
-                            <input
-                                type='text'
-                                className='form-control'
-                                name='subject'
-                                placeholder='Subject'
-                            />
-                        </div>
-
-                        <div className='form-group'>
-                            <textarea
-                                name='message'
-                                placeholder='Message...'
-                                className='form-control'>
-                            </textarea>
-                        </div>
-
-                        <div className='form-group'>
-                            <button 
-                                className='btn btn-success btn-block btn-lg'
-                            >
-                                <strong> Send Message</strong>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-        </Fragment>
-
-    )
+	let SubmitHandler = e => {
+		e.preventDefault();
+		console.log('Submitting Contact Form');
+	};
+	return (
+		<Fragment>
+			<div className="box box-body">
+				<div className="box box-header">
+					<h3 className="box-title">
+						<i className="fa fa-mobile-phone"> </i> Contact Details
+					</h3>
+					<div className="box-tools">
+						<button
+							type="button"
+							className="btn btn-box-tool"
+							name="contactform"
+							onClick={e => setDisplay('contact-form')}
+						>
+							<i className="fa fa-envelope"> </i> {" "}
+              Contact Form
+						</button>
+						<button
+							type="button"
+							className="btn btn-box-tool"
+							name="contactdetails"
+							onClick={e => setDisplay('contact-details')}
+						>
+							<i className="fa fa-info"> </i> {" "}
+              Contact Details
+						</button>
+					</div>
+				</div>
+				{display === 'contact-form' ? <ThisContactForm /> : ''}
+				{display === 'contact-details' ? <ContactDetails /> : ''}
+			</div>
+		</Fragment>
+	);
 }

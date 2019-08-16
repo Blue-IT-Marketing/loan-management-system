@@ -1,12 +1,13 @@
 
 import * as routes from './routes';
-
+import * as settings from './program_constants';
 export {
-    routes
+    routes,
+    settings
 };
 
 
-export const app_name = 'Loan Management System';
+
 
 
 

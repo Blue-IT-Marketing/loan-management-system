@@ -7,7 +7,7 @@ class Utilities {
     }
 
     isUrl = (url) => {
-        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name and extension
             '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
             '(\\:\\d+)?' + // port
@@ -31,6 +31,19 @@ class Utilities {
         return false;
     };
 
+    isCompanyReg = reg => {
+        return true;
+    };
+
+    isFSP = fsp => {
+        return true;
+    };
+
+    isNCR = ncr => {
+        return true;
+    };
+
+
     validateEmail = (email) => {
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
@@ -51,15 +64,15 @@ class Utilities {
     };
 
     isCell = (n) => {
-        return isNumber(n) ? ((n.length === 10) || (n.length === 11) || (n.length === 12) || (n.length === 13)) : false;
+        return this.isNumber(n) ? ((n.length === 10) || (n.length === 11) || (n.length === 12) || (n.length === 13)) : false;
     };
 
     isTel = (n) => {
-        return n !== undefined ? isCell(n) : false;
+        return n !== undefined ? this.isCell(n) : false;
     };
 
     isFax = (n) => {
-        return n !== undefined ? isCell(n) : false;
+        return n !== undefined ? this.isCell(n) : false;
     };
 
     getAge = (dateString) => {
@@ -82,7 +95,7 @@ class Utilities {
         return age;
     };
     isIDNumber = (n) => {
-        return n !== undefined ? (isNumber(n)) && (n.length === 13) : true;
+        return n !== undefined ? (this.isNumber(n)) && (n.length === 13) : true;
     };
     numDaysBetweenDates = (firstDate, secondDate) => {
 
@@ -158,8 +171,6 @@ class Utilities {
             inDebounce = setTimeout(() => func.apply(context, args), delay)
         }
     };
-
-
 }
 
 // (today,url)
