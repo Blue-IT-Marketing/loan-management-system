@@ -961,7 +961,7 @@ const ContactDetails = () => {
 							type="text"
 							className="form-control"
 							name="cell"
-							placeholder="cel"
+							placeholder="Cell"
 							value={cell}
 							onChange={e => onChangeHandler(e)}
 						/>
@@ -976,7 +976,7 @@ const ContactDetails = () => {
 							type="text"
 							className="form-control"
 							name="email"
-							placeholder="email"
+							placeholder="Email"
 							value={email}
 							onChange={e => onChangeHandler(e)}
 						/>

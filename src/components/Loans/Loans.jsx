@@ -1,5 +1,6 @@
 import React,{Fragment,useState} from 'react';
 import ApplicantDetails from './ApplicantDetails';
+import EmploymentDetails from './EmploymetDetails';
 
 
 
@@ -22,6 +23,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="applicant"
+							onClick={e => setDisplay('applicant-details')}
 						>
 							<strong>
 								{' '}
@@ -32,6 +34,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="employment-details"
+							onClick={e => setDisplay('employment-details')}
 						>
 							<strong>
 								{' '}
@@ -42,6 +45,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="income-expenditure"
+							onClick={e => setDisplay('income-expenditure')}
 						>
 							<strong>
 								{' '}
@@ -52,13 +56,19 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="credit-provider"
+							onClick={e => setDisplay('credit-provider')}
 						>
 							<strong>
 								{' '}
 								<i className="fa fa-user"> </i> Credit Provider{' '}
 							</strong>
 						</button>
-						<button type="button" className="btn btn-box-tool" name="advance">
+						<button
+							type="button"
+							className="btn btn-box-tool"
+							name="advance"
+							onClick={e => setDisplay('advance')}
+						>
 							<strong>
 								{' '}
 								<i className="fa fa-credit-card"> </i> Advance Amount{' '}
@@ -68,6 +78,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="banking-details"
+							onClick={e => setDisplay('banking-details')}
 						>
 							<strong>
 								{' '}
@@ -78,6 +89,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="admin"
+							onClick={e => setDisplay('admin')}
 						>
 							<strong>
 								{' '}
@@ -87,16 +99,8 @@ const Loans = () => {
 					</div>
 				</div>
 
-
-				{(display === 'applicant-details') ?
-					<ApplicantDetails /> 
-					:''                   
-				}
-
-
-
-
-
+				{display === 'applicant-details' ? <ApplicantDetails /> : ''}
+				{display === 'employment-details' ? <EmploymentDetails /> : ''}
 			</div>
 		</Fragment>
 	);
