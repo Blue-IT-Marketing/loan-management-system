@@ -24,3 +24,7 @@ export const dashboard_page = '/dashboard'; // site owner and administrator only
 // api routes
 export const user_api_url = '/admin/user';
 export const company_api_url = '/admin/company';
+export const loan_personal_details_api_url = '/admin/loan/client/personal';
+export const loan_physical_address_api_url = '/admin/loan/client/physical';
+export const loan_postal_address_api_url = '/admin/loan/client/postal';
+export const loan_contact_details_api_url = '/admin/loan/client/contact';
