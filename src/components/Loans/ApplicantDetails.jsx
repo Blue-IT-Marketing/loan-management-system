@@ -85,7 +85,9 @@ let next_of_kin_init_error = {
 	cell_error : ''
 };
 
+// eslint-disable-next-line no-unused-vars
 const PersonalDetails = () => {
+	
 	const [personal_details,setPersonalDetails] = useState(personal_details_init);
 	const[errors,setErrors] = useState(personal_details_errors_init);
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
@@ -196,19 +198,35 @@ const PersonalDetails = () => {
 	};
 
 	const onSavePersonalDetails = async e => {
-		axios.post(routes.loan_personal_details_api_url,JSON.stringify(personal_details)).then(result => {
-			if(result.status === 200){
+
+		try{
+		await axios.post(
+				routes.loan_personal_details_api_url,
+				JSON.stringify(personal_details)
+			)
+			.then(result => {
+				if (result.status === 200) {
 				return result.data;
-			}else{
-				throw new Error('There was an error saving personal details');
-			}
-		}).then(personal_details => {
-			setPersonalDetails({personal_details});
-			setInline({message:'Successfully saved personal details, continue adding more client data'});
-		}).catch(error => {
+				} else {
+				throw new Error("There was an error saving personal details");
+				}
+			})
+			.then(personal_details => {
+				setPersonalDetails({ personal_details });
+				setInline({
+				message:
+					"Successfully saved personal details, continue adding more client data"
+				});
+			})
+			.catch(error => {
+				console.log(error);
+				setInline({ message: error.message, message_type: "error" });
+			});
+
+		}catch(error){
 			console.log(error);
-			setInline({message:error.message,message_type:'error'});
-		});
+			setInline({ message: error.message, message_type: "error" });			
+		}
 	};
 
 	return (
@@ -462,7 +480,8 @@ const PhysicalAddress = () => {
 	};
 
 	const onSavePhysicalAddress = async e => {
-		axios.post(routes.loan_physical_address_api_url,JSON.stringify(physical_address)).then(result => {
+		try{
+		await axios.post(routes.loan_physical_address_api_url,JSON.stringify(physical_address)).then(result => {
 			if(result.status === 200){
 				return result.data;
 			}else{
@@ -475,6 +494,10 @@ const PhysicalAddress = () => {
 			console.log(error);
 			setInline({message:error.message,message_type:'error'});
 		});		
+	}catch(error){
+		console.log(error);
+		setInline({ message: error.message, message_type: "error" });
+	}
 	};
 
 	return (
@@ -700,8 +723,29 @@ const PostalAddress = () => {
 		return isError;
 	};
 
-	const onSavePostalAddress = e => {
+	const onSavePostalAddress = async e => {
+		try{
+			await axios.post(routes.loan_postal_address_api_url,JSON.stringify(postal_address)).then(result => {
+				if(result.status === 200){
+					return result.data;
+				}else{
+					throw new Error('error saving postal address');
+				}
+			}).then(postal_address => {
+				setPostalAddress({
+					...postal_address,
+					[e.target.name]:e.target.value
+				});
+				setInline({message:'successfully saved postal address'});
+			}).catch(error => {
+				console.log(error);
+				setInline({message:error.message,message_type:'error'});
+			})
 
+		}catch(error){
+			console.log(error);
+			setInline({message:error.message,message_type:'error'});
+		}
 	};
 
 	return (
@@ -896,11 +940,10 @@ const ContactDetails = () => {
 		return isError;
 	};
 
-	const onSaveContactDetails = e => {
-	
+	const onSaveContactDetails = async e => {
 
 		try {
-			axios
+			await axios
 				.post(
 					routes.loan_contact_details_api_url,
 					JSON.stringify(contact_details)
@@ -921,9 +964,11 @@ const ContactDetails = () => {
 				.catch(error => {
 					console.log(error.message);
 					setInline({ message: error.message, message_type: 'error' });
+
 				});
 		} catch (error) {
 			setInline({ message: error.response.data, message_type: 'error' });
+
 		}
 	
 	};
@@ -997,7 +1042,12 @@ const ContactDetails = () => {
 										if (result) {
 											throw new Error('there where errors processing form');
 										} else {
-											onSaveContactDetails(e);
+											onSaveContactDetails(e).then(result => {
+											// setInline({message:result.message,message_type:result.message_type})
+											}).catch(result =>{
+												console.log(result);
+												
+											});
 										}
 									})
 									.catch(error => {
@@ -1115,8 +1165,30 @@ const NextOfKin = () => {
 	};
 
 	const onSaveNextofKin = async () => {
+		try{
+			await axios.post(routes.loan_nextofkin_api_url,JSON.stringify(nextofkin)).then(result => {
+				if(result.status === 200){
+					return result.data;
+				}else{
+					throw new Error('there was an error processing form');
+				}
+			}).then(nextofkin => {
+				setNextOfKin({nextofkin});
+				setInline({message:'Successfully saved next of kin',message_type:'INFO'});
+			
+			}).catch(error => {
+				console.log(error);
+				setInline({message:error.message,message_type:'error'});
+			
+			});
 
+		}catch(error){
+			console.log(error);
+			setInline({message:error.message,message_type:'error'});
+			
+		}
 	};
+
 	return (
 		<Fragment>
 			<form className="form-horizontal">

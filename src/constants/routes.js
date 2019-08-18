@@ -28,3 +28,9 @@ export const loan_personal_details_api_url = '/admin/loan/client/personal';
 export const loan_physical_address_api_url = '/admin/loan/client/physical';
 export const loan_postal_address_api_url = '/admin/loan/client/postal';
 export const loan_contact_details_api_url = '/admin/loan/client/contact';
+
+export const loan_employers_api_url = '/admin/loan/client/employers';
+export const loan_nextofkin_api_url = '/admin/loan/client/next-of-kin';
+
+export const loan_employer_details_api_url = '/admin/loan/client/employer-details';
+export const loan_employer_address_api_url = '/admin/loan/client/employer-address';

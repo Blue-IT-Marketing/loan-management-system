@@ -5,7 +5,7 @@ class myLocalStore {
 
     constructor() {
         this.date = new Date();
-        this.memStoreStateKey = 'p2ploans';
+        this.memStoreStateKey = 'mobius-crypt-storage-';
         this.state_keys = [];
         this.use_mem_store = false;
         this.stale_period = 1200000; // equals 5 minutes
@@ -114,37 +114,10 @@ class myLocalStore {
                 throw new Error('Invalid seed value');
             }
 
-            // if (this.state_keys.findIndex(stateKey) === -1){
-            //     this.state_keys.push(stateKey);
-            //     this.mem_store_value.state_key = stateKey;
-            //     this.mem_store_value.state = state;
-            //     this.mem_store.push(this.mem_store_value);
-            //     await localStorage.setItem(this.memStoreStateKey,this.state_keys);
-            // }
-
         }catch (e) {
             return undefined;
         }
     };
-
-
-    // staleItemFound = async (seed,stateKey) => {
-    //         let stamp_2 = new Date();
-    //         stamp_2 = stamp_2.getTime();
-    //
-    //
-    //         const stamp_1 = await decrypt(localStorage.getItem(stateKey+'_timestamp'),seed);
-    //         let diff = parseInt(parseFloat(stamp_2) - parseFloat(stamp_1));
-    //
-    //         console.log('Here is the diff', diff);
-    //         if (diff > this.stale_period){
-    //             console.log('Item found',stateKey);
-    //             await localStorage.removeItem(stateKey);
-    //             await localStorage.removeItem(stateKey+'_timestamp');
-    //         }
-    //         return true;
-    // }
-
 };
 
 

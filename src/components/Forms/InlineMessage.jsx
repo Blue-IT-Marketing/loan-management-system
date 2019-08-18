@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,9 +7,17 @@ class InlineMessage extends Component {
 		this.state = {message : this.props.message,
 			message_type : this.props.message_type};
 	}
+
 	render() {
+		let myHeader;
+		if(this.state.message_type === 'error') {
+			myHeader = 'box-warning';
+		}else{
+			myHeader = 'box-info';
+		}									
 		return (
-			<div className={'box-info'}>
+			
+			<div className={myHeader}>
 				<div className={'box box-header'}>
 					
 					<div className={'box-tools'}>
