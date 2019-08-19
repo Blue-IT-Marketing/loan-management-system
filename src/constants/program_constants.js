@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export let app_name = 'sa-loans';
-export let app_long_name = 'South African Loan Management Portal';
+export let app_name = 'midey-finance';
+export let app_long_name = 'midey finance';
 export let app_descrition = 'a portal for small loan management, with Midey Loans';
 export let cell = '0790471559';
 export let email = 'mobiusndou@gmail.com';

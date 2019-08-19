@@ -26,6 +26,9 @@ import Account from '../Account/Account';
 import Profile from '../Profile/Profile';
 import Profiles from '../Profile/Profiles';
 import Loans from '../Loans/Loans';
+import Chat from '../Chat/Chat';
+import Leads from '../Leads/Leads';
+import ActiveLoans from '../Loans/ActiveLoans';
 
 
 
@@ -62,7 +65,11 @@ export default function App () {
 								<Route path={routes.profiles} component={Profiles} />
 								
 								<Route path={routes.loans_page} component={Loans}/>
+								<Route path={routes.active_loans_page} component={ActiveLoans} />								
+								<Route path={routes.chat_page} component={Chat} />
+								<Route path={routes.leads_page} component={Leads} />
 								<Route exact path={routes.admin_page} component={Account} />
+
 							</section>
 						</section>
 					</div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { Fragment, useState } from 'react';
 import {Utils} from '../../utilities';
@@ -5,85 +6,18 @@ import InlineError from '../Forms/InlineError';
 import InlineMessage from '../Forms/InlineMessage';
 import axios from 'axios';
 import { routes } from '../../constants';
-
-let personal_details_init = {
-	client_id : '',
-	title : '',
-	surname : '',
-	names : '',
-	id : '',
-	dob : '',
-	nationality : ''
-};
-let personal_details_errors_init = {
-	title_error : '',
-	surname_error : '',
-	names_error : '',
-	id_error : '',
-	dob_error : '',
-	nationality_error : ''
-};
-
-let physical_address_init = {
-	client_id: '',
-	stand: '',
-	street_name: '',
-	city: '',
-	province: '',
-	country : '',
-	postal_code : ''
-};
-let physical_address_errors_init = {
-	stand_error : '',
-	street_name_error : '',
-	city_error : '',
-	province_error : '',
-	country_error : '',
-	postal_code_error : ''
-};
-
-
-let postal_address_init = {
-	client_id : '',
-	box : '',
-	city : '',
-	province : '',
-	postal_code : '',
-	country : ''
-};
-
-let postal_address_error_init = {
-	box_error : '',
-	city_error : '',
-	province_error : '',
-	postal_code_error : '',
-	country_error : ''
-};
-
-let contact_details_init = {
-	client_id : '',
-	tel : '',
-	cell :'',
-	email : ''
-};
-
-let contact_details_errors_init = {
-	tel_error : '',
-	cell_error : '',
-	email_error : ''
-};
-
-let next_of_kin_init = {
-	client_id : '',
-	names : '',
-	address : '',
-	cell : ''
-};
-let next_of_kin_init_error = {
-	names_error : '',
-	address_error : '',
-	cell_error : ''
-};
+import {
+	personal_details_init,
+	personal_details_errors_init,
+	physical_address_init,
+	physical_address_errors_init,
+	postal_address_init,
+	postal_address_error_init,
+	contact_details_init,
+	contact_details_errors_init,
+	next_of_kin_init,
+	next_of_kin_init_error
+} from './loans-constants';
 
 // eslint-disable-next-line no-unused-vars
 const PersonalDetails = () => {
@@ -200,32 +134,32 @@ const PersonalDetails = () => {
 	const onSavePersonalDetails = async e => {
 
 		try{
-		await axios.post(
+			await axios.post(
 				routes.loan_personal_details_api_url,
 				JSON.stringify(personal_details)
 			)
-			.then(result => {
-				if (result.status === 200) {
-				return result.data;
-				} else {
-				throw new Error("There was an error saving personal details");
-				}
-			})
-			.then(personal_details => {
-				setPersonalDetails({ personal_details });
-				setInline({
-				message:
-					"Successfully saved personal details, continue adding more client data"
+				.then(result => {
+					if (result.status === 200) {
+						return result.data;
+					} else {
+						throw new Error('There was an error saving personal details');
+					}
+				})
+				.then(personal_details => {
+					setPersonalDetails({ personal_details });
+					setInline({
+						message:
+					'Successfully saved personal details, continue adding more client data'
+					});
+				})
+				.catch(error => {
+					console.log(error);
+					setInline({ message: error.message, message_type: 'error' });
 				});
-			})
-			.catch(error => {
-				console.log(error);
-				setInline({ message: error.message, message_type: "error" });
-			});
 
 		}catch(error){
 			console.log(error);
-			setInline({ message: error.message, message_type: "error" });			
+			setInline({ message: error.message, message_type: 'error' });			
 		}
 	};
 
@@ -481,23 +415,23 @@ const PhysicalAddress = () => {
 
 	const onSavePhysicalAddress = async e => {
 		try{
-		await axios.post(routes.loan_physical_address_api_url,JSON.stringify(physical_address)).then(result => {
-			if(result.status === 200){
-				return result.data;
-			}else{
-				throw new Error('There was an error saving physical address');
-			}
-		}).then(physical_address => {
-			setPhysicalAddress({physical_address});
-			setInline({message:'Successfully saved client physical address'});
-		}).catch(error => {
+			await axios.post(routes.loan_physical_address_api_url,JSON.stringify(physical_address)).then(result => {
+				if(result.status === 200){
+					return result.data;
+				}else{
+					throw new Error('There was an error saving physical address');
+				}
+			}).then(physical_address => {
+				setPhysicalAddress({physical_address});
+				setInline({message:'Successfully saved client physical address'});
+			}).catch(error => {
+				console.log(error);
+				setInline({message:error.message,message_type:'error'});
+			});		
+		}catch(error){
 			console.log(error);
-			setInline({message:error.message,message_type:'error'});
-		});		
-	}catch(error){
-		console.log(error);
-		setInline({ message: error.message, message_type: "error" });
-	}
+			setInline({ message: error.message, message_type: 'error' });
+		}
 	};
 
 	return (
@@ -740,7 +674,7 @@ const PostalAddress = () => {
 			}).catch(error => {
 				console.log(error);
 				setInline({message:error.message,message_type:'error'});
-			})
+			});
 
 		}catch(error){
 			console.log(error);

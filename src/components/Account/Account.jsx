@@ -109,14 +109,13 @@ function PersonalDetails({user_account}){
 		// save personal details on localStorage. then save on backend
 		//  setState = async(seed, stateKey, state);
 		try{
-			let stateKey = settings.localStorageKey + '-' + uid + 'user-personal-details';
+			let stateKey = settings.localStorageKey + '-' + uid + '-' + 'user-personal-details';
 			
 			myStore.setState(uid,stateKey,personalDetails).then(result => {
 				console.log(result);
 			}).catch(error => {
 				console.log(error);
 			});
-
 
 			await axios.put(routes.user_api_url,JSON.stringify(personalDetails)).then(result => {
 				if(result.status === 200){

@@ -14,7 +14,7 @@ const Loans = () => {
 					<h3 className="box-title">
 						<strong>
 							{' '}
-							<i className="fa fa-dollar"> </i> Loans{' '}
+							<i className="fa fa-dollar"> </i> Create Loans{' '}
 						</strong>
 					</h3>
 

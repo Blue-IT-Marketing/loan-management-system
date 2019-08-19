@@ -8,67 +8,80 @@ import { UserAccountContext } from '../../../context/UserAccount/userAccountCont
 
 const SideBarMenuAuth = () => {
 	return (
-    <ul className="sidebar-menu">
-      <li className="header">{settings.app_name}</li>
-      <li>
-        <Link to={routes.home_page} title={settings.app_name}>
-          <i className="fa fa-home" /> <strong>Home</strong>
-        </Link>
-      </li>
-      <li>
-        <Link to={routes.about_page} title="About">
-          <i className="fa fa-info" /> <strong>About</strong>
-        </Link>
-      </li>
-      <li>
-        <Link to={routes.contact_page} title="Contact Us">
-          <i className="fa fa-envelope" /> <strong>Contact</strong>
-        </Link>
-      </li>
-      <li className="active treeview">
-        <Link to="#">
-          <i className="fa fa-user-md" /> <span>Client Area</span>
-          <span className="pull-right-container">
-            <i className="fa fa-angle-left pull-right" />
-          </span>
-        </Link>
-        <ul className="treeview-menu">
-          <li>
-            <Link to={routes.admin_page} title="manage your Account">
-              <i className="fa fa-sign-in"> </i> <strong> Account</strong>{" "}
-            </Link>{" "}
-          </li>
-          <li>
-            <Link to={routes.loans_page}>
-              <i className="fa fa-dollar"> </i>
-              <strong>Create Loans</strong>
-            </Link>
-          </li>
-          <li>
-            <Link to={routes.loans_page}>
-              <i className="fa fa-archive"> </i>
-              <strong>Active Loans </strong>
-            </Link>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <Link to={routes.blog_page} title="Blog">
-          <i className="fa fa-book"> </i> <strong>Blog</strong>
-        </Link>
-      </li>
-      <li>
-        <Link to={routes.dashboard_page} title="Dashboard">
-          <i className="fa fa-dashboard"> </i> <strong>Dashboard</strong>
-        </Link>
-      </li>
-      <li>
-        <Link to={routes.logout_page} title="Logout">
-          <i className="fa fa-sign-out"> </i> <strong> Logout </strong>
-        </Link>
-      </li>
-    </ul>
-  );
+		<ul className="sidebar-menu">
+			<li className="header">{settings.app_name}</li>
+			<li>
+				<Link to={routes.home_page} title={settings.app_name}>
+					<i className="fa fa-home" /> <strong>Home</strong>
+				</Link>
+			</li>
+			<li>
+				<Link to={routes.about_page} title="About">
+					<i className="fa fa-info" /> <strong>About</strong>
+				</Link>
+			</li>
+			<li>
+				<Link to={routes.contact_page} title="Contact Us">
+					<i className="fa fa-envelope" /> <strong>Contact</strong>
+				</Link>
+			</li>
+			<li className="active treeview">
+				<Link to="#">
+					<i className="fa fa-user-md" /> <span>Client Area</span>
+					<span className="pull-right-container">
+						<i className="fa fa-angle-left pull-right" />
+					</span>
+				</Link>
+				<ul className="treeview-menu">
+					<li>
+						<Link to={routes.admin_page} title="manage your Account">
+							<i className="fa fa-sign-in"> </i> <strong> Account</strong>{' '}
+						</Link>{' '}
+					</li>
+					<li>
+						<Link to={routes.leads_page}>
+							<i className="fa fa-compass"> </i>
+							<strong>Leads </strong>
+						</Link>
+					</li>
+
+					<li>
+						<Link to={routes.loans_page}>
+							<i className="fa fa-dollar"> </i>
+							<strong>Create Loans</strong>
+						</Link>
+					</li>
+					<li>
+						<Link to={routes.active_loans_page}>
+							<i className="fa fa-archive"> </i>
+							<strong>Active Loans </strong>
+						</Link>
+					</li>
+					<li>
+						<Link to={routes.chat_page}>
+							<i className="fa fa-comment"> </i>
+							<strong>Chat </strong>
+						</Link>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<Link to={routes.blog_page} title="Blog">
+					<i className="fa fa-book"> </i> <strong>Blog</strong>
+				</Link>
+			</li>
+			<li>
+				<Link to={routes.dashboard_page} title="Dashboard">
+					<i className="fa fa-dashboard"> </i> <strong>Dashboard</strong>
+				</Link>
+			</li>
+			<li>
+				<Link to={routes.logout_page} title="Logout">
+					<i className="fa fa-sign-out"> </i> <strong> Logout </strong>
+				</Link>
+			</li>
+		</ul>
+	);
 };
 
 const SideBarMenuNonAuth = () => {

@@ -14,6 +14,9 @@ export const blog_page = '/blog';
 
 export const admin_page = '/admin-user'; // + userid
 export const loans_page = '/admin-loans';
+export const active_loans_page = '/admin-loans-active';
+export const chat_page = '/admin-chat';
+export const leads_page = '/admin-leads';
 
 export const profiles = '/profiles';
 
@@ -34,3 +37,5 @@ export const loan_nextofkin_api_url = '/admin/loan/client/next-of-kin';
 
 export const loan_employer_details_api_url = '/admin/loan/client/employer-details';
 export const loan_employer_address_api_url = '/admin/loan/client/employer-address';
+
+export const loans_api_endpoint = '/admin/loans';

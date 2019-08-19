@@ -4,7 +4,7 @@ import ContactDetails from './ContactDetails';
 
 
 export default function Contact() {
-	const[display,setDisplay] = useState('contact-details');
+	const [display, setDisplay] = useState('contact-form');
 
 	let ResetDefault = e => {
 		if (e.target.value === 'Message...') {
@@ -30,7 +30,7 @@ export default function Contact() {
 							name="contactform"
 							onClick={e => setDisplay('contact-form')}
 						>
-							<i className="fa fa-envelope"> </i> {" "}
+							<i className="fa fa-envelope"> </i> {' '}
               Contact Form
 						</button>
 						<button
@@ -39,7 +39,7 @@ export default function Contact() {
 							name="contactdetails"
 							onClick={e => setDisplay('contact-details')}
 						>
-							<i className="fa fa-info"> </i> {" "}
+							<i className="fa fa-info"> </i> {' '}
               Contact Details
 						</button>
 					</div>
