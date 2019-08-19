@@ -4,24 +4,25 @@ import React, {
 	useContext,
 	useRef,
 	useState
-} from "react";
-import { Link, Redirect, navigate } from "react-router-dom";
-import { routes } from "../../../constants";
+} from 'react';
+import { Link, Redirect, navigate } from 'react-router-dom';
+import { routes } from '../../../constants';
 
-import { UserAccountContext } from "../../../context/UserAccount/userAccountContext";
+import { UserAccountContext } from '../../../context/UserAccount/userAccountContext';
 
-import Input from "../../Input/Input";
+import Input from '../../Input/Input';
+import InlineMessage from '../../Forms/InlineMessage';
 
 export default function Login() {
-	const [values, setValues] = useState({ username: "", password: "" });
-
+	const [values, setValues] = useState({ username: '', password: '' });
+	const[inline,setInline] = useState({message:'',message_type:'info'});
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
 	const submitRef = useRef(null);
 
 	let handleChange = e => {
 		const { name, value } = e.target;
-		console.log("Name : ", name, " Value : ", value);
+		console.log('Name : ', name, ' Value : ', value);
 		setValues({
 			...values,
 			[name]: value
@@ -32,13 +33,13 @@ export default function Login() {
 
 	useEffect(() => {
 		usernameRef.current.focus();
-		console.log("Login page loaded");
+		console.log('Login page loaded');
 	}, []);
 
 	return (
 		<UserAccountContext.Consumer>
 			{context => {
-				console.log("The big loggin context", context);
+				console.log('The big loggin context', context);
 				const { doLogin, user_account_state } = context;
 				const { username, password } = values;
 				return (
@@ -97,7 +98,9 @@ export default function Login() {
 											className="btn btn-success btn-lg"
 											ref={submitRef}
 											onClick={e => {
-												doLogin(username, password);
+												doLogin(username, password).then(response =>{
+													setInline({message:response,message_type:'info'});
+												});
 												//navigate("/", true);
 											}}
 										>
@@ -115,6 +118,9 @@ export default function Login() {
 												</strong>
 											</button>
 										</Link>
+									</div>
+									<div className='form-group'>
+										{inline.message ? <InlineMessage message={inline.message} message_type={inline.message_type}/>:''}
 									</div>
 								</form>
 							</div>

@@ -3,7 +3,7 @@ import {firebase,auth} from '../firebase';
 
 import {
   loginUser, logOutUser, SendEmailVerification
-} from './actions';
+} from '../actions/user-actions';
 
 export const UserAccountContext = createContext();
 export default class UserAccountContextProvider extends Component {
@@ -11,7 +11,8 @@ export default class UserAccountContextProvider extends Component {
 
     doLogin = async (username,password) => {
       let user_account_state = await loginUser(username,password);
-      this.setState({user_account_state})
+      this.setState({user_account_state});
+      return user_account_state.form_response 
     };
 
     doLogout = async() => {

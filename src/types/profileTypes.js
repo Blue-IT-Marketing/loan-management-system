@@ -120,10 +120,6 @@ export let personal_details_type_errors ={
 	tagline_error : ''
 };
 
-
-
-
-
 //****************** this is a type for account details
 
 export let account_details_type = {

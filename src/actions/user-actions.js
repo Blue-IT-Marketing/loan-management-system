@@ -5,7 +5,7 @@ import {
 import {
 	account_details_type,
 	account_details_type_error
-} from '../../types';
+} from '../types';
 
 import { auth } from '../../firebase';
 
