@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { Fragment,useEffect,useState } from 'react';
 import axios from 'axios';
 import { MDBDataTable } from 'mdbreact';
@@ -29,42 +30,62 @@ const ActiveLoans = () => {
 		return () => {
             
 		};
-	}, [loans]);
+	}, []);
 
-  const data ={     
-    columns: [
-      {
-        label: "Client ID",
-        field: "client_id",
-        sort: "asc",
-        width: 150
-      },
-      {
-        label: "ID Number",
-        field: "id",
-        sort: "asc",
-        width: 270
-      },
-      {
-        label: "Surname",
-        field: "surname",
-        sort: "asc",
-        width: 200
-      },
-      {
-        label: "Full Names",
-        field: "names",
-        sort: "asc",
-        width: 100
-      },
-      {
-        label: "ALLPS",
-        field: "allps",
-        sort: "asc",
-        width: 150
-      }
-    ],
-    rows : loans}
+	const returnData = () => {
+
+		const prepareLoans = () => {
+			let preparedLoans = [];
+
+			loans.forEach(loan => {        
+				preparedLoans.push(Object.entries(loan));
+			});
+			return preparedLoans;
+		};
+
+		const data = {
+			columns: [
+				{
+					label: 'Client ID',
+					field: 'client_id',
+					sort: 'asc',
+					width: 150
+				},
+				{
+					label: 'ID Number',
+					field: 'id',
+					sort: 'asc',
+					width: 270
+				},
+				{
+					label: 'Surname',
+					field: 'surname',
+					sort: 'asc',
+					width: 200
+				},
+				{
+					label: 'Full Names',
+					field: 'names',
+					sort: 'asc',
+					width: 100
+				},
+				{
+					label: 'ALLPS',
+					field: 'allps',
+					sort: 'asc',
+					width: 150
+				}
+			],
+			rows:  prepareLoans()
+		};
+    
+		return data;
+
+	};
+  
+	let data =  returnData();
+  console.log('DATA',data);
+	
 
 	return (
 		<Fragment>
@@ -78,72 +99,12 @@ const ActiveLoans = () => {
 				</div>
 
 				<div className="box box-footer">
-					{/* <table
-            id="ActivePolicyListTable"
-            class="table table-bordered table-striped"
-          >
-            <thead>
-              <tr>
-                <th>Midey Account</th>
-                <th>ID Number</th>
-                <th>Surname</th>
-                <th>Full Names</th>
-                <th>ALLPS</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <a href="/loans/list/0007E2120"> 0007E2120 </a>
-                </td>
-                <td>8004185430083</td>
-                <td>MONYELA</td>
-                <td>ABRAHAM AUBREY</td>
-                <td>P005</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <a href="/loans/list/0001E267"> 0001E267 </a>
-                </td>
-                <td>7501051590081</td>
-                <td>MULOVHEDZI</td>
-                <td>MASALA DEPHENEY </td>
-                <td>957</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <a href="/loans/list/0001E914"> 0001E914 </a>
-                </td>
-                <td>7004066419081</td>
-                <td>BADATSWANA</td>
-                <td>REMBULUWANI</td>
-                <td>11409</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th>Midey Account</th>
-                <th>ID Number</th>
-                <th>Surname</th>
-                <th>Full Names</th>
-                <th>ALLPS</th>
-              </tr>
-            </tfoot>
-          </table> */}
-					<MDBDataTable striped bordered hover data={data} />;
+					{ data ?
+						<MDBDataTable striped bordered hover data={data} /> : ''
+					}
 				</div>
 			</div>
 			<div className="box-footer">
-				{inline.message ? (
-					<InlineMessage
-						message={inline.message}
-						message_type={inline.message_type}
-					/>
-				) : (
-					''
-				)}
 			</div>
 		</Fragment>
 	);

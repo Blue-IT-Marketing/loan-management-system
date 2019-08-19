@@ -25,17 +25,18 @@ export const dashboard_page = '/dashboard'; // site owner and administrator only
 
 
 // api routes
-export const user_api_url = '/admin/user';
-export const company_api_url = '/admin/company';
-export const loan_personal_details_api_url = '/admin/loan/client/personal';
-export const loan_physical_address_api_url = '/admin/loan/client/physical';
-export const loan_postal_address_api_url = '/admin/loan/client/postal';
-export const loan_contact_details_api_url = '/admin/loan/client/contact';
+export const user_api_url = '/api/user';
+export const company_api_url = '/api/company';
+export const loan_personal_details_api_url = '/api/loan/client/personal';
+export const loan_physical_address_api_url = '/api/loan/client/physical';
+export const loan_postal_address_api_url = '/api/loan/client/postal';
+export const loan_contact_details_api_url = '/api/loan/client/contact';
 
-export const loan_employers_api_url = '/admin/loan/client/employers';
-export const loan_nextofkin_api_url = '/admin/loan/client/next-of-kin';
+export const loan_employers_api_url = '/api/loan/client/employers';
+export const loan_nextofkin_api_url = '/api/loan/client/next-of-kin';
 
-export const loan_employer_details_api_url = '/admin/loan/client/employer-details';
-export const loan_employer_address_api_url = '/admin/loan/client/employer-address';
+export const loan_employer_details_api_url = '/api/loan/client/employer-details';
+export const loan_employer_address_api_url = '/api/loan/client/employer-address';
 
-export const loans_api_endpoint = '/admin/loans';
+export const loans_api_endpoint = '/api/loans';
+export const leads_api_endpoint = '/api/leads';
