@@ -2,8 +2,10 @@ import React, { Fragment,useContext } from 'react';
 import { Link } from 'react-router-dom';
 import MenuItems from '../MenuItems/MenuItems';
 import { routes, settings } from '../../../constants';
-import logo_url from '../../../assets/logos/logo.PNG';
-import { UserAccountContext } from "../../../context/UserAccount/userAccountContext";
+
+import { UserAccountContext } from '../../../context/UserAccount/userAccountContext';
+
+
 
 export default function SideBar (){
 	
@@ -21,63 +23,65 @@ export default function SideBar (){
 			} = context;
 			const userSignedInText = user_account_state.user_account
 				.uid
-				? `<p id="strSideUserNameID"><Link to={routes.logout_page}> Logout</Link></p>`
-				: `<p id="strSideUserNameID"><Link to={routes.login_page}> Login</Link></p>`;
+				? '<p id="strSideUserNameID"><Link to={routes.logout_page}> Logout</Link></p>'
+				: '<p id="strSideUserNameID"><Link to={routes.login_page}> Login</Link></p>';
 
     
 			return (
-        <Fragment>
-          <aside className="main-sidebar">
-            <section className="sidebar">
-              <div className="user-panel">
-                <div className="pull-left image">
-                  <span className="img-circle">{settings.app_name}</span>
-                </div>
-                <div className="pull-left info">
-                  {user_account_state.user_account.uid ? (
-                    <p id="strSideUserNameID">
-                      <Link to={routes.logout_page}> Logout</Link>
-                    </p>
-                  ) : (
-                    <p id="strSideUserNameID">
-                      <Link to={routes.login_page}> Login</Link>
-                    </p>
-                  )}
-                </div>
-              </div>
+				<Fragment>
+					<aside className="main-sidebar">
+						<section className="sidebar">
+							<div className="user-panel">
+								<div className="pull-left image">
+									<span className="img-circle">
+										<img className='pola-image' src="https://mideygroup.co.za/new/wp-content/uploads/2018/04/Midey-logo-home.png" />
+									</span>
+								</div>
+								<div className="pull-left info">
+									{user_account_state.user_account.uid ? (
+										<p id="strSideUserNameID">
+											<Link to={routes.logout_page}> Logout</Link>
+										</p>
+									) : (
+										<p id="strSideUserNameID">
+											<Link to={routes.login_page}> Login</Link>
+										</p>
+									)}
+								</div>
+							</div>
 
-              <form
-                onSubmit={e => onSearch(e)}
-                method="get"
-                className="sidebar-form"
-              >
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="q"
-                    className="form-control"
-                    placeholder="Search..."
-                  />
-                  <span className="input-group-btn">
-                    <button
-                      type="submit"
-                      name="search"
-                      id="search-btn"
-                      className="btn btn-flat"
-                    >
-                      <i className="fa fa-search" />
-                    </button>
-                  </span>
-                </div>
-              </form>
+							<form
+								onSubmit={e => onSearch(e)}
+								method="get"
+								className="sidebar-form"
+							>
+								<div className="input-group">
+									<input
+										type="text"
+										name="q"
+										className="form-control"
+										placeholder="Search..."
+									/>
+									<span className="input-group-btn">
+										<button
+											type="submit"
+											name="search"
+											id="search-btn"
+											className="btn btn-flat"
+										>
+											<i className="fa fa-search" />
+										</button>
+									</span>
+								</div>
+							</form>
 
-              <ul className="sidebar-menu">
-                <MenuItems />
-              </ul>
-            </section>
-          </aside>
-        </Fragment>
-      );
+							<ul className="sidebar-menu">
+								<MenuItems />
+							</ul>
+						</section>
+					</aside>
+				</Fragment>
+			);
 		}}
 		</UserAccountContext.Consumer>
 	);

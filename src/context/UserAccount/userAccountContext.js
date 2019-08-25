@@ -14,25 +14,31 @@ export default class UserAccountContextProvider extends Component {
 
     doLogin = async (username,password) => {
       let user_account_state = await loginUser(username,password);
-      this.setState({user_account_state})
+      this.setState({user_account_state});
+      return user_account_state;
     }
 
     doLogout = async() => {
       let user_account_state = await logOutUser();
       this.setState({
         user_account_state
-      })
+      });
+      return user_account_state;
     }
 
     doSendEmailVerification = async() => {
-      if (this.state.user_account_state.user_account.emailVerified){
-      console.log('Cannot send verification email account already verified');
-    }else{
-      let user_account_state = await SendEmailVerification(this.state.user_account_state.user_account);
-      this.setState({
-        user_account_state: user_account_state
-      });
-    }
+        if (this.state.user_account_state.user_account.emailVerified){
+          console.log('Cannot send verification email account already verified');
+        }else{
+          let user_account_state = await SendEmailVerification(this.state.user_account_state.user_account);
+
+              await this.setState({
+                user_account_state: user_account_state
+              });    
+            
+          }
+
+        return this.state.user_account_state;
     }
 
     onChange = (user) => {
@@ -54,6 +60,10 @@ export default class UserAccountContextProvider extends Component {
     // const unsubscribe = firebase.auth().onAuthStateChanged(this.onChange);    
     const dounsubscribe = firebase.firebase.auth().onAuthStateChanged(this.onChange)
   }  
+
+  componentWillUnmount = () => {
+    // actually unsubscribe here
+  }
 
   render() {
     return (

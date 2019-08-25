@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React, {
 	Fragment,
 	useEffect,
@@ -68,7 +70,14 @@ export default function Login() {
 							<div className="box-footer">
 								<form
 									className="form-horizontal"
-									onSubmit={e => doLogin(username, password)}
+									onSubmit={e =>  doLogin(username, password).then(response =>{
+										setInline({
+											message: response.form_response,
+											message_type: 'info'
+										});
+									})
+
+									}
 								>
 									<div className="form-group">
 										<Input
@@ -99,7 +108,7 @@ export default function Login() {
 											ref={submitRef}
 											onClick={e => {
 												doLogin(username, password).then(response =>{
-													setInline({message:response,message_type:'info'});
+													setInline({message:response.form_response,message_type:'info'});
 												});
 												//navigate("/", true);
 											}}

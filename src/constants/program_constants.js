@@ -3,8 +3,8 @@ import axios from 'axios';
 export let app_name = 'midey-finance';
 export let app_long_name = 'midey finance';
 export let app_descrition = 'a portal for small loan management, with Midey Loans';
-export let cell = '0790471559';
-export let email = 'mobiusndou@gmail.com';
+export let cell = '0159601459';
+export let email = 'info@mideygroup.co.za';
 export let fax = '086****786';
 export let localStorageKey = 'saloans-';
 
@@ -14,9 +14,9 @@ export let small_logo_url = '../assets/logo/logo.PNG';
 export let maps_url = '';
 export let business_address = ``;
 export let business_reg_number = '';
-export let business_fax = '';
-export let business_tel = '0790471559';
-export let business_email = 'justice@justicendou.site';
+export let business_fax = '0159620976';
+export let business_tel = '0159601459';
+export let business_email = 'info@mideygroup.co.za';
 
 
 export let firebase = {

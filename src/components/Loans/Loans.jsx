@@ -1,7 +1,10 @@
 import React,{Fragment,useState} from 'react';
 import ApplicantDetails from './ApplicantDetails';
 import EmploymentDetails from './EmploymetDetails';
-
+import IncomeExpenditure from './IncomeExpenditure';
+import CreditProvider from './CreditProvider';
+import AdvancedAmount from './AdvancedAmount';
+import BankingDetails from './BankingDetails';
 
 
 const Loans = () => {
@@ -101,6 +104,10 @@ const Loans = () => {
 
 				{display === 'applicant-details' ? <ApplicantDetails /> : ''}
 				{display === 'employment-details' ? <EmploymentDetails /> : ''}
+				{display === 'income-expenditure' ? <IncomeExpenditure /> : ''}
+				{display === 'credit-provider' ? <CreditProvider /> : ''}
+				{display === 'advance' ? <AdvancedAmount /> : ''}
+				{display === 'banking-details' ? <BankingDetails /> : ''}
 			</div>
 		</Fragment>
 	);
