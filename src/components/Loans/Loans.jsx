@@ -5,6 +5,7 @@ import IncomeExpenditure from './IncomeExpenditure';
 import CreditProvider from './CreditProvider';
 import AdvancedAmount from './AdvancedAmount';
 import BankingDetails from './BankingDetails';
+import Admin from './Admin';
 
 
 const Loans = () => {
@@ -26,7 +27,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="applicant"
-							onClick={e => setDisplay('applicant-details')}
+							onClick={() => setDisplay('applicant-details')}
 						>
 							<strong>
 								{' '}
@@ -37,7 +38,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="employment-details"
-							onClick={e => setDisplay('employment-details')}
+							onClick={() => setDisplay('employment-details')}
 						>
 							<strong>
 								{' '}
@@ -48,29 +49,19 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="income-expenditure"
-							onClick={e => setDisplay('income-expenditure')}
+							onClick={() => setDisplay('income-expenditure')}
 						>
 							<strong>
 								{' '}
 								<i className="fa fa-money"> </i> Income &amp; Expenditure{' '}
 							</strong>
 						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="credit-provider"
-							onClick={e => setDisplay('credit-provider')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-user"> </i> Credit Provider{' '}
-							</strong>
-						</button>
+
 						<button
 							type="button"
 							className="btn btn-box-tool"
 							name="advance"
-							onClick={e => setDisplay('advance')}
+							onClick={() => setDisplay('advance')}
 						>
 							<strong>
 								{' '}
@@ -81,7 +72,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="banking-details"
-							onClick={e => setDisplay('banking-details')}
+							onClick={() => setDisplay('banking-details')}
 						>
 							<strong>
 								{' '}
@@ -92,7 +83,7 @@ const Loans = () => {
 							type="button"
 							className="btn btn-box-tool"
 							name="admin"
-							onClick={e => setDisplay('admin')}
+							onClick={() => setDisplay('admin')}
 						>
 							<strong>
 								{' '}
@@ -108,6 +99,7 @@ const Loans = () => {
 				{display === 'credit-provider' ? <CreditProvider /> : ''}
 				{display === 'advance' ? <AdvancedAmount /> : ''}
 				{display === 'banking-details' ? <BankingDetails /> : ''}
+				{display === 'admin' ? <Admin /> : ''}
 			</div>
 		</Fragment>
 	);

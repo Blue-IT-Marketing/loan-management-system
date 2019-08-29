@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React, { Fragment,useEffect,useState } from 'react';
 import { leads_init} from './leads-constants';
 import {routes} from '../../constants';
@@ -11,14 +13,14 @@ const Activate = () => {
 
 	const returnData = () => {
 
-        let rowdata = [];
+		let rowdata = [];
         
 		const parseRowData = ()  => {
 			leads.forEach(lead => {
 				rowdata.push(Object.entries(lead));
 			});
 			return true;
-        };
+		};
         
 		parseRowData();
 
@@ -79,7 +81,7 @@ const Activate = () => {
 		};
 	}, []);
 
-    let data = returnData();
+	let data = returnData();
     
 	return (
 		<Fragment>
@@ -96,8 +98,6 @@ const Activate = () => {
 					<MDBDataTable striped bordered hover data={data} /> : ''
 				}
 
-
-                
 			</div>
 		</Fragment>
             

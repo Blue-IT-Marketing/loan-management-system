@@ -1,11 +1,13 @@
 export let personal_details_init = {
-	client_id: '',
+	uid: '',
+	loan_id : '',
 	title: '',
 	surname: '',
 	names: '',
 	id: '',
 	dob: '',
-	nationality: ''
+	nationality: '',
+	allps : ''
 };
 export let personal_details_errors_init = {
 	title_error: '',
@@ -16,7 +18,7 @@ export let personal_details_errors_init = {
 	nationality_error: ''
 };
 export let physical_address_init = {
-	client_id: '',
+	id: '',
 	stand: '',
 	street_name: '',
 	city: '',
@@ -33,7 +35,7 @@ export let physical_address_errors_init = {
 	postal_code_error: ''
 };
 export let postal_address_init = {
-	client_id: '',
+	id: '',
 	box: '',
 	city: '',
 	province: '',
@@ -48,7 +50,7 @@ export let postal_address_error_init = {
 	country_error: ''
 };
 export let contact_details_init = {
-	client_id: '',
+	id: '',
 	tel: '',
 	cell: '',
 	email: ''
@@ -65,7 +67,8 @@ export let next_of_kin_init = {
 	cell: ''
 };
 export let next_of_kin_init_error = {
-	names_error: '',
+	id : '',
+    names_error: '',
 	address_error: '',
 	cell_error: ''
 };

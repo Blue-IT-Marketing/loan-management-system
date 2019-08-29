@@ -21,8 +21,7 @@ export default function SideBar (){
 				doLogin,
 				user_account_state
 			} = context;
-			const userSignedInText = user_account_state.user_account
-				.uid
+			const userSignedInText = user_account_state.user_account.uid
 				? '<p id="strSideUserNameID"><Link to={routes.logout_page}> Logout</Link></p>'
 				: '<p id="strSideUserNameID"><Link to={routes.login_page}> Login</Link></p>';
 

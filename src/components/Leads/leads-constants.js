@@ -4,6 +4,7 @@ import {
 } from '../Loans/loans-constants';
 export let leads_init = {
 	...personal_details_init,
+	uid : '',
 	cell: '',
 	email: '',
 	notes: ''

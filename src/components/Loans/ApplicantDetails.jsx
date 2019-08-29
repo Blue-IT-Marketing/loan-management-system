@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import React, { Fragment, useState } from 'react';
+import React, {Fragment, useState, useContext, useEffect} from 'react';
 import {Utils} from '../../utilities';
 import InlineError from '../Forms/InlineError';
 import InlineMessage from '../Forms/InlineMessage';
 import axios from 'axios';
 import { routes } from '../../constants';
+
+import {UserAccountContext} from '../../context/UserAccount/userAccountContext';
+
 import {
 	personal_details_init,
 	personal_details_errors_init,
@@ -25,7 +28,7 @@ const PersonalDetails = () => {
 	const [personal_details,setPersonalDetails] = useState(personal_details_init);
 	const[errors,setErrors] = useState(personal_details_errors_init);
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
-    
+	const { user_account_state } = useContext(UserAccountContext);
 
 	const onChangeHandler = e =>{
 		setPersonalDetails({
@@ -128,16 +131,21 @@ const PersonalDetails = () => {
 		if(await check_nationality()){
 			isError = true;
 		}
+
+		// i need a bettr way to set uid
+		await setPersonalDetails({
+			...personal_details,
+			uid:user_account_state.user_account.uid
+		});
+
 		return isError;
 	};
 
 	const onSavePersonalDetails = async e => {
 
+
 		try{
-			await axios.post(
-				routes.loan_personal_details_api_url,
-				JSON.stringify(personal_details)
-			)
+			await axios.post(routes.loan_personal_details_api_url, '&data='+ JSON.stringify(personal_details))
 				.then(result => {
 					if (result.status === 200) {
 						return result.data;
@@ -162,6 +170,7 @@ const PersonalDetails = () => {
 			setInline({ message: error.message, message_type: 'error' });			
 		}
 	};
+
 
 	return (
 		<Fragment>
@@ -330,7 +339,7 @@ const PhysicalAddress = () => {
 		});
 	};
 	const {
-		client_id,
+		id,
 		stand,
 		street_name,
 		city,
@@ -408,6 +417,7 @@ const PhysicalAddress = () => {
 		if(await check_postal_code()){
 			isError = true;
 		}
+
 
 		return isError;
 
@@ -573,7 +583,7 @@ const PhysicalAddress = () => {
 const PostalAddress = () => {
 	const[postal_address,setPostalAddress] = useState(postal_address_init);
 	const{
-		client_id,
+		uid,
 		box,
 		city,
 		province,
@@ -813,7 +823,7 @@ const ContactDetails = () => {
 	const[errors,setErrors] = useState(contact_details_errors_init);
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
 	const{
-		client_id,
+		uid,
 		tel,
 		cell,
 		email,
@@ -1036,7 +1046,7 @@ const NextOfKin = () => {
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
 
 	const {
-		client_id,
+		uid,
 		names,
 		address,
 		cell

@@ -1,8 +1,14 @@
-import React, { Fragment,useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+import React, { Fragment,useState,useContext } from 'react';
 import InlineError from '../Forms/InlineError';
 import InlineMessage from '../Forms/InlineMessage';
 import {Utils} from '../../utilities';
 import {leads_init,leads_init_error} from './leads-constants';
+import axios from 'axios';
+import {routes} from '../../constants';
+import {UserAccountContext} from '../../context/UserAccount/userAccountContext';
+
 const ClientsCapture = () => {
 	const [leads_details, setLeads] = useState(leads_init);
 	const[errors,setErrors] = useState(leads_init_error);
@@ -14,11 +20,15 @@ const ClientsCapture = () => {
 	};
 
 	const[inline,setInline] = useState({message:'',message_type:'info'});
+
+	const { user_account_state } = useContext(UserAccountContext);
+
     
-	let onCheckErrors = async e => {
+	const onCheckErrors = async e => {
 		console.log(e.target);
 		let isError = false;
 		const {
+			
 			title,
 			surname,
 			names,
@@ -157,8 +167,31 @@ const ClientsCapture = () => {
 		return isError;
 	};
 
-	let onSaveLead = async e => {
+	const onSaveLead = async e => {
+		try{
 
+			await setLeads({
+				...leads_details,
+				uid:user_account_state.user_account.uid
+			});
+
+			await axios.post(routes.leads_api_endpoint,'&data='+JSON.stringify(leads_details)).then(result => {
+				if(result.status === 200){
+					return result.data;
+				}else{
+					throw new Error('there was an error saving your lead');
+				}
+			}).then(leads_details => {
+				setLeads(leads_details);
+				return true;
+			}).catch(error => {
+				setInline({message:error.message,message_type:'error'});
+				return false;
+			});
+		}catch(error){
+			setInline({ message: error.message, message_type: 'error' });
+			return false;
+		}
 	};
 
 

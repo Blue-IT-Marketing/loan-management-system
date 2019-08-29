@@ -8,10 +8,10 @@ import json
 
 
 class Contact(ndb.Expando):
-    contact_id : ndb.StringProperty()
-    names : ndb.StringProperty() 
-    cell : ndb.StringProperty() 
-    email : ndb.StringProperty() 
-    subject : ndb.StringProperty()   
-    message : ndb.StringProperty() 
+    contact_id = ndb.StringProperty()
+    names = ndb.StringProperty()
+    cell = ndb.StringProperty()
+    email = ndb.StringProperty()
+    subject = ndb.StringProperty()
+    message = ndb.StringProperty()
     
