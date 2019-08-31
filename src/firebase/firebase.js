@@ -1,6 +1,5 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import {settings} from '../constants';
-import 'firebase/auth';
 const config = settings.firebase;
 
 
@@ -11,11 +10,14 @@ try{
 }
 
 
+
 const auth = firebase.auth();
+const storage = firebase.storage();
 
 
 
 
 export {auth,
-	firebase
+	firebase,
+	storage	
 };

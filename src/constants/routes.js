@@ -46,4 +46,7 @@ export const loans_api_endpoint = '/api/loans';
 export const leads_api_endpoint = '/api/leads';
 
 
+export const chat_users_api_endpoint = 'https://us-central1-midey-finance.cloudfunctions.net/apigetusers';
+
+
 

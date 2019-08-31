@@ -8,7 +8,7 @@ import React, {
 	useState
 } from 'react';
 import { Link, Redirect, navigate } from 'react-router-dom';
-import { routes } from '../../../constants';
+import { routes,settings } from '../../../constants';
 
 import { UserAccountContext } from '../../../context/UserAccount/userAccountContext';
 
@@ -33,7 +33,17 @@ export default function Login() {
 		console.log(values);
 	};
 
+	const checkLogin = () => {
+		if (!localStorage.getItem(settings.firebase.authDomain)) {
+			console.log("User is logged not in");
+			
+		} else { 
+			console.log('User is logged in');
+		}
+	};
+
 	useEffect(() => {
+		checkLogin();
 		usernameRef.current.focus();
 		console.log('Login page loaded');
 	}, []);

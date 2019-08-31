@@ -2,7 +2,7 @@
 import React,{useState,useContext,useEffect} from 'react';
 import {Route} from 'react-router-dom';
 import {Redirect} from 'react-router-dom';
-import { UserAccountContext } from "../../../context/UserAccount/userAccountContext";
+import { UserAccountContext } from '../../../context/UserAccount/userAccountContext';
 import {routes} from '../../../constants';
 
 const ProtectedRoute = ({Component:Component, ...rest}) => {
@@ -12,7 +12,7 @@ const ProtectedRoute = ({Component:Component, ...rest}) => {
 	useEffect(() => {
 		if (!user_account_state.user_account.uid){
 			setRedirect(true);
-			console.log("REDIRECT SET");		
+			console.log('REDIRECT SET');		
 		}
 	}, []);
 		
