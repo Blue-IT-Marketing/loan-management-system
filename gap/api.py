@@ -23,6 +23,14 @@ class APIRouterHandler(webapp2.RequestHandler):
             for lead in leads_list:
                 response_data.append(lead.to_dict())
 
+        elif 'loans' in route:
+            loans_request = LoanApplicantDetails.query()
+            loans_list = loans_request.fetch()
+
+            response_data = []
+            for loan in loans_list:
+                response_data.append(loan.to_dict())
+
         else:
             response_data = {'message':'general error can not understand your request'}
             status_int = 501
@@ -123,9 +131,10 @@ class APIRouterHandler(webapp2.RequestHandler):
                 this_applicant.writeDateOfBirth(strinput=dob)
                 this_applicant.writeNationality(strinput=nationality)
 
+                response_data = this_applicant.to_dict()
                 this_applicant.put()
 
-                response_data = this_applicant.to_dict()
+                
 
         else:
             response_data = {'message':'general error cannot understand request'}

@@ -154,7 +154,7 @@ const PersonalDetails = () => {
 					}
 				})
 				.then(personal_details => {
-					setPersonalDetails({ personal_details });
+					setPersonalDetails({...personal_details });
 					setInline({
 						message:
 					'Successfully saved personal details, continue adding more client data'

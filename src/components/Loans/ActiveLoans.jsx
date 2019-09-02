@@ -2,52 +2,43 @@
 import React, { Fragment,useEffect,useState } from 'react';
 import axios from 'axios';
 import { MDBDataTable } from 'mdbreact';
-import {personal_details_init,personal_details_errors_init} from './loans-constants';
+import {personal_details_init,personal_details_errors_init,mapToLoans} from './loans-constants';
 import {routes} from '../../constants';
 import InlineMessage from '../Forms/InlineMessage';
 
 const ActiveLoans = () => {
 	const[loans, setLoans] = useState([]);
 	const[inline,setInline] = useState({message:'',message_type:'info'});
+	const[data,setData] = useState([]);
 
-	useEffect(() => {        
-		const fetchAPI = async () => {
-			await axios.get(routes.loans_api_endpoint).then(results => {
-				if(results.status === 200){
-					return results.data;
-				}else{
-					throw new Error('there was an error fetching loans-please check your internet connection');
-				}
-			}).then(loans => {
-				setLoans(loans);
-				setInline({message:'successfully loaded loans'});        
-			}).catch(error => {
-				setInline({message:'error : '+ error.message,message_type:'error'});
-			});
-		};
 
-		fetchAPI();
-		return () => {
-            
-		};
-	}, []);
-
-	const returnData = () => {
+	const returnData = async () => {
 
 		const prepareLoans = () => {
 			let preparedLoans = [];
 
 			loans.forEach(loan => {        
-				preparedLoans.push(Object.entries(loan));
+				console.dir('Prepared',loan);
+				preparedLoans.push({
+					loan_id:loan.loan_id,
+					id:loan.id,
+					surname:loan.surname,
+					names:loan.names,
+					allps:loan.allps
+				});
 			});
+
 			return preparedLoans;
 		};
 
-		const data = {
+		let rows = await prepareLoans();
+		rows = [...rows];
+
+		let data = {
 			columns: [
 				{
-					label: 'Client ID',
-					field: 'client_id',
+					label: 'Loan ID',
+					field: 'loan_id',
 					sort: 'asc',
 					width: 150
 				},
@@ -76,15 +67,59 @@ const ActiveLoans = () => {
 					width: 150
 				}
 			],
-			rows:  prepareLoans()
-		};
-    
+			rows:  rows
+		};    
 		return data;
-
 	};
   
-	let data =  returnData();
-  console.log('DATA',data);
+
+	// start preparing display as soon as loans have been added
+	useEffect(() => {
+		returnData().then(data => {
+			console.log('Big Data', data);
+		    setData(data);
+		});
+		return () => {
+			setData([]);
+		};
+	}, [loans]);
+
+
+	useEffect(() => {
+		const fetchAPI = async () => {
+			await axios
+				.get(routes.loans_api_endpoint)
+				.then(results => {
+					if (results.status === 200) {
+						return results.data;
+					} else {
+						throw new Error(
+							'there was an error fetching loans-please check your internet connection'
+						);
+					}
+				})
+				.then(loans => {
+					let comp_loan = mapToLoans(loans);
+					setLoans(comp_loan);
+					setInline({ message: 'successfully loaded loans' });
+					return true;
+				})
+				.catch(error => {
+					setInline({
+						message: 'error : ' + error.message,
+						message_type: 'error'
+					});
+					return false;
+				});
+		};
+
+		fetchAPI().then(result => {
+			console.log('Active loans fetched successfully');
+		});
+		return () => {};
+	}, []);
+	
+  
 	
 
 	return (

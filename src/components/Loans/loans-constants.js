@@ -72,3 +72,35 @@ export let next_of_kin_init_error = {
 	address_error: '',
 	cell_error: ''
 };
+
+
+	// uid: '',
+	// loan_id : '',
+	// title: '',
+	// surname: '',
+	// names: '',
+	// id: '',
+	// dob: '',
+	// nationality: '',
+	// allps : ''
+
+export const mapToLoans = (loans) => {
+	console.dir('Mapping this fileds : ', loans);
+	let prepared_loans = [];
+	loans.forEach(loan => {
+		prepared_loans.push({
+			uid: loan.uid,
+			loan_id : loan.loan_id,
+			title : loan.title,
+			surname: loan.surname,
+			names : loan.names,
+			id:loan.id,
+			dob:loan.dob,
+			nationality:loan.nationality,
+			allps:loan.allps
+		});
+	});
+	
+	return prepared_loans;
+	
+};
