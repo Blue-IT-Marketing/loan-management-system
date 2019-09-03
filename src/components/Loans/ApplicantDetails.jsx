@@ -171,7 +171,6 @@ const PersonalDetails = () => {
 		}
 	};
 
-
 	return (
 		<Fragment>
 			<form className="form-horizontal">

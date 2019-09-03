@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React,{Fragment,useState} from 'react';
 import ApplicantDetails from './ApplicantDetails';
 import EmploymentDetails from './EmploymetDetails';
