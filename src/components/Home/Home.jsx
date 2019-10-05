@@ -34,8 +34,7 @@ export default function Home (){
 							<button
 								type="button"
 								className="btn btn-success btn-lg"
-								name="employees"
-							>
+								name="employees">
 								<strong>
 									<i className="fa fa-sign-in"> </i> Employees Login
 								</strong>
