@@ -34,7 +34,29 @@ const IncomeExpenditure = () => {
 		total_expenditure_error : '',
 		affordability_error : ''
 	});
+
 	const[inline,setInline] = useState({message:'',message_type:'info'});
+
+	const [incomeMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener('click', hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener('click', hideDropdownMenu);
+	};
+
+
+
+
+
+
+
+
 
 	let {
 		income_after_deduction,
@@ -66,15 +88,15 @@ const IncomeExpenditure = () => {
 		parseInt(income_after_deduction) + parseInt(overtime) + parseInt(commission) + parseInt(other_income);
 	const getTotalCost = () =>
 		(parseInt(bond_repayments) +
-    parseInt(loan_installments) +
-    parseInt(electricity_telephone) +
-    parseInt(insurance) +
-    parseInt(maintenance) +
-    parseInt(transport) +
-    parseInt(basic_necessities) +
-    parseInt(domestic_wages) +
-    parseInt(education) +
-    parseInt(other_expenses)) ;
+    	parseInt(loan_installments) +
+    	parseInt(electricity_telephone) +
+    	parseInt(insurance) +
+    	parseInt(maintenance) +
+    	parseInt(transport) +
+    	parseInt(basic_necessities) +
+    	parseInt(domestic_wages) +
+    	parseInt(education) +
+    	parseInt(other_expenses)) ;
 
 	const calculateAffordability = e => {
 		setAffordability({
@@ -167,27 +189,40 @@ const IncomeExpenditure = () => {
 						</strong>
 					</h3>
 					<div className="box-tools">
-						<button
-							className="btn btn-box-tool btn-outline-dark"
-							name="income"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							<i className="fa fa-dollar"> </i> Income
-						</button>
-						<button
-							className="btn btn-box-tool btn-outline-dark"
-							name="expenditure"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							<i className="fa fa-dollar"> </i> Expenditure
-						</button>
-						<button
-							className="btn btn-box-tool btn-outline-dark"
-							name="affordability"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							<i className="fa fa-money"> </i> Affordability
-						</button>
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className="fa fa-bars"> </i>{' '}
+							</button>
+							{incomeMenu.menu ? (
+								<ul className="dropmenu">
+									<li
+										className="btn btn-block droplink"
+										name="income"
+										onClick={e => setDisplay('income')}
+									>
+										<i className="fa fa-dollar"> </i> Income
+									</li>
+									<li
+										className="btn btn-block droplink"
+										name="expenditure"
+										onClick={e => setDisplay('expenditure')}
+									>
+										<i className="fa fa-dollar"> </i> Expenditure
+									</li>
+									<li
+										className="btn btn-block droplink"
+										name="affordability"
+										onClick={e => setDisplay('affordability')}
+									>
+										<i className="fa fa-money"> </i> Affordability
+									</li>
+								</ul>
+							) : null}
+						</div>
 					</div>
 				</div>
 
@@ -202,7 +237,7 @@ const IncomeExpenditure = () => {
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
 									{' '}
-                  					Income after deductions
+                  Income after deductions
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -219,7 +254,7 @@ const IncomeExpenditure = () => {
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
 									{' '}
-                  					Overtime
+                  Overtime
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -235,7 +270,7 @@ const IncomeExpenditure = () => {
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
 									{' '}
-                  					Commissions
+                  Commissions
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -251,7 +286,7 @@ const IncomeExpenditure = () => {
 
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  					Other Income
+                  Other Income
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -267,7 +302,7 @@ const IncomeExpenditure = () => {
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
 									{' '}
-                  					Total Income
+                  Total Income
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -295,7 +330,7 @@ const IncomeExpenditure = () => {
 									>
 										<strong>
 											<i className="fa fa-calculator"> </i> Calculate Total
-                      						Income
+                      Income
 										</strong>
 									</button>
 								</div>
@@ -311,13 +346,13 @@ const IncomeExpenditure = () => {
 						<div className="box box-header">
 							<h3 className="box-title">
 								<i className="fa fa-dollar"> </i>
-                				Costs{' '}
+                Costs{' '}
 							</h3>
 						</div>
 						<form className="form-horizontal">
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Bond Repayments
+                  Bond Repayments
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -333,7 +368,7 @@ const IncomeExpenditure = () => {
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
 									{' '}
-									Loan Installments
+                  Loan Installments
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -348,7 +383,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                 				Electricity
+                  Electricity
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -363,7 +398,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Insurance
+                  Insurance
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -378,7 +413,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Maintenance
+                  Maintenance
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -393,7 +428,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Transport
+                  Transport
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -408,7 +443,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Basic Neccessities
+                  Basic Neccessities
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -423,7 +458,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Domestic Wages
+                  Domestic Wages
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -438,7 +473,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Education
+                  Education
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -453,7 +488,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Other Expenses
+                  Other Expenses
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -468,7 +503,7 @@ const IncomeExpenditure = () => {
 							</div>
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Total Expenses
+                  Total Expenses
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -495,7 +530,7 @@ const IncomeExpenditure = () => {
 										}}
 									>
 										<i className="fa fa-calculator"> </i>
-										Total Expenditure
+                    Total Expenditure
 									</button>
 								</div>
 							</div>
@@ -515,7 +550,7 @@ const IncomeExpenditure = () => {
 						<form className="form-horizontal">
 							<div className="form-group">
 								<label className="col-sm-3 control-label pull-left">
-                  				Affordability
+                  Affordability
 								</label>
 								<div className="col-sm-9">
 									<input
@@ -538,7 +573,7 @@ const IncomeExpenditure = () => {
 									>
 										<strong>
 											<i className="fa fa-calculator"> </i> Calculate
-                      						Affordability
+                      Affordability
 										</strong>
 									</button>
 									<button

@@ -1226,6 +1226,20 @@ const NextOfKin = () => {
 
 const ApplicantDetails = () => {
 	const[display,setDisplay] = useState('personal-details');
+
+	const [loansMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener("click", hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener("click", hideDropdownMenu);
+	};
+
 	return (
 		<Fragment>
 			<div className="box box-footer">
@@ -1238,46 +1252,53 @@ const ApplicantDetails = () => {
 					</h3>
 
 					<div className="box-tools">
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="personal-details"
-							onClick={e => setDisplay('personal-details')}
-						>
-							<i className="fa fa-user"> </i> Personal Details
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="physical-address"
-							onClick={e => setDisplay('physical-address')}
-						>
-							<i className="fa fa-building"> </i> Physical Address
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="postal-address"
-							onClick={e => setDisplay('postal-address')}
-						>
-							<i className="fa fa-envelope"> </i> Postal Address
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="contact-details"
-							onClick={e => setDisplay('contact-details')}
-						>
-							<i className="fa fa-mobile-phone"> </i> Contact Details
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="nextofkin"
-							onClick={e => setDisplay('nextofkin')}
-						>
-							<i className="fa fa-user"> </i> Next of Kin
-						</button>
+
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className='fa fa-bars'> </i>{' '}
+							</button>
+							{loansMenu.menu ? (
+								<ul className="dropmenu">
+									<li className="btn btn-block droplink"
+										name="personal-details"
+										onClick={e => setDisplay('personal-details')}
+									>
+										<i className="fa fa-user"> </i> Personal Details
+									</li>
+
+									<li className="btn btn-block droplink"
+										name="physical-address"
+										onClick={e => setDisplay('physical-address')}
+									>
+										<i className="fa fa-building"> </i> Physical Address
+									</li>
+
+									<li className="btn btn-block droplink"
+										name="postal-address"
+										onClick={e => setDisplay('postal-address')}
+									>
+										<i className="fa fa-envelope"> </i> Postal Address
+									</li>
+									<li className="btn btn-block droplink"
+										name="contact-details"
+										onClick={e => setDisplay('contact-details')}
+									>
+										<i className="fa fa-mobile-phone"> </i> Contact Details
+									</li>
+									<li className="btn btn-block droplink"
+										name="nextofkin"
+										onClick={e => setDisplay('nextofkin')}
+									>
+										<i className="fa fa-user"> </i> Next of Kin
+									</li>
+
+								</ul>
+							):null}
+						</div>
 					</div>
 				</div>
 				{

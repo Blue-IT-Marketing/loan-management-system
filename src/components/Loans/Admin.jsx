@@ -126,6 +126,18 @@ const CreateFile = () => {
 
 const Admin = () => {
 	const [display, setDisplay] = useState('show-instructions');
+	const [adminMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener('click', hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener('click', hideDropdownMenu);
+	};
 
 	
 	return (
@@ -139,38 +151,34 @@ const Admin = () => {
 					</h3>
 
 					<div className="box-tools">
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="show-instructions"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							
-							{' '}
-							<i className="fa fa-dashboard"> </i> Admin{' '}
-							
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="activate-loan"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							
-							<i className="fa fa-file"> </i> Activate Loan
-							
-						</button>
-
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="create-file"
-							onClick={e => setDisplay(e.target.name)}
-						>
-							
-							<i className="fa fa-file"> </i> Create File
-							
-						</button>
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className='fa fa-bars'> </i>{' '}
+							</button>
+							{adminMenu.menu ? (
+								<ul className="dropmenu">
+									<li className="btn btn-block droplink"
+										name="show-instructions"
+										onClick={e => setDisplay('show-instructions')}
+									><i className="fa fa-dashboard"> </i> Admin{' '}
+									</li>
+									<li className="btn btn-block droplink"
+										name="activate-loan"
+										onClick={e => setDisplay('activate-loan')}
+									><i className="fa fa-file"> </i> Activate Loan
+									</li>
+									<li className="btn btn-block droplink"
+										name="create-file"
+										onClick={e => setDisplay('create-file')}
+									><i className="fa fa-file"> </i> Create File
+									</li>
+								</ul> 
+							) : null }
+						</div>
 					</div>
 
 					{display === 'show-instructions' ? <ShowInstructions /> : ''}

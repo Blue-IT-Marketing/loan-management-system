@@ -563,11 +563,19 @@ function UserDetails(){
 
 export default function Account (){
 	const [display, setDisplay] = useState('personaldetails');
-    
-	let onSwitchScreen = (e) => {
-		setDisplay(e.target.name);
-		console.log(display);        
+	const [accountMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener("click", hideDropdownMenu);
 	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener("click", hideDropdownMenu);
+	};
+    
 
 	useEffect(() => {
 		console.log(display);
@@ -586,30 +594,40 @@ export default function Account (){
 								</strong>
 							</h3>
 							<div className="box-tools">
-								<button
-									type="button"
-									className="btn btn-box-tool"
-									name="personaldetails"
-									onClick={e => onSwitchScreen(e)}
-								>
-									<i className="fa fa-user"> </i> Personal Details
-								</button>
-								<button
-									type="button"
-									className="btn btn-box-tool"
-									name="companydetails"
-									onClick={e => onSwitchScreen(e)}
-								>
-									<i className="fa fa-registered"> </i> Company Details
-								</button>
-								<button
-									type="button"
-									className="btn btn-box-tool"
-									name="users"
-									onClick={e => onSwitchScreen(e)}
-								>
-									<i className="fa fa-users"> </i> Users
-								</button>
+								<div className="dropdown">
+									<button
+										type="button"
+										className="btn btn-box-tool dropdown"
+										onClick={e => showDropdownMenu(e)}
+									>
+										<i className='fa fa-bars'> </i>{' '}
+									</button>
+									{accountMenu.menu ? (
+										<ul className="dropmenu">
+											<li className="btn btn-block droplink"
+												name="personaldetails"
+												onClick={e => setDisplay('personaldetails')}
+											>
+												<i className="fa fa-user"> </i> Personal Details
+											</li>
+
+											<li className="btn btn-block droplink"
+												name="companydetails"
+												onClick={e => setDisplay('companydetails')}
+											>
+												<i className="fa fa-registered"> </i> Company Details
+											</li>
+
+											<li className="btn btn-block droplink"
+												name="users"
+												onClick={e => setDisplay('users')}
+											>
+												<i className="fa fa-users"> </i> Users
+											</li>
+
+										</ul>
+									):null}
+								</div>
 							</div>
 						</div>
 

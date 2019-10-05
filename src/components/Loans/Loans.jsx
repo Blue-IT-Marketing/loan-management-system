@@ -10,7 +10,22 @@ import Admin from './Admin';
 
 
 const Loans = () => {
+
 	const[display,setDisplay] = useState('applicant-details');
+
+	const [loansMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener("click", hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener("click", hideDropdownMenu);
+	};
+
 
 	return (
 		<Fragment>
@@ -24,73 +39,73 @@ const Loans = () => {
 					</h3>
 
 					<div className="box-tools">
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="applicant"
-							onClick={() => setDisplay('applicant-details')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-user"> </i> Applicant Details{' '}
-							</strong>
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="employment-details"
-							onClick={() => setDisplay('employment-details')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-amazon"> </i> Employment Details{' '}
-							</strong>
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="income-expenditure"
-							onClick={() => setDisplay('income-expenditure')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-money"> </i> Income &amp; Expenditure{' '}
-							</strong>
-						</button>
 
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="advance"
-							onClick={() => setDisplay('advance')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-credit-card"> </i> Advance Amount{' '}
-							</strong>
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="banking-details"
-							onClick={() => setDisplay('banking-details')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-building"> </i> Banking Details{' '}
-							</strong>
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="admin"
-							onClick={() => setDisplay('admin')}
-						>
-							<strong>
-								{' '}
-								<i className="fa fa-dashboard"> </i> Admin{' '}
-							</strong>
-						</button>
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className='fa fa-bars'> </i>{' '}
+							</button>
+							{loansMenu.menu ? (
+								<ul className="dropmenu">
+									<li className="btn btn-block droplink"
+										name="applicant"
+										onClick={() => setDisplay('applicant-details')}
+									>
+										<strong>
+											{' '}
+											<i className="fa fa-user"> </i> Applicant Details{' '}
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="income-expenditure"
+										onClick={() => setDisplay('income-expenditure')}
+									><strong> {' '} <i className="fa fa-money"> </i> Income &amp; Expenditure{' '}
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="employment-details"
+										onClick={() => setDisplay('employment-details')}
+									>
+										<strong>
+											{' '}
+											<i className="fa fa-amazon"> </i> Employment Details{' '}
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="advance"
+										onClick={() => setDisplay('advance')}
+									>
+										<strong>
+											{' '}
+											<i className="fa fa-credit-card"> </i> Advance Amount{' '}
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="banking-details"
+										onClick={() => setDisplay('banking-details')}
+									>
+										<strong>
+											{' '}
+											<i className="fa fa-building"> </i> Banking Details{' '}
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="admin"
+										onClick={() => setDisplay('admin')}
+									>
+										<strong>
+											{' '}
+											<i className="fa fa-dashboard"> </i> Admin{' '}
+										</strong>
+									</li>
+
+								</ul>
+							): null}
+						</div>
+
 					</div>
 				</div>
 

@@ -1,44 +1,44 @@
-/* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Capitalize } from 'react-lodash';
 
-class InlineMessage extends Component {
-	constructor(props){
-		super(props);
-		this.state = {message : this.props.message,
-			message_type : this.props.message_type};
-	}
+const InlineMessage = ({ message, message_type }) => {
+	const [inline, setInline] = useState({ message: '', message_type: 'info' });
+	const [dialogType, setdialogType] = useState({
+		main: 'box-info',
+		button_type: 'box-title btn-outline-info btn-lg',
+		check_mark: 'fa fa-check-circle'
+	});
 
-	render() {
-		let myHeader;
-		if(this.state.message_type === 'error') {
-			myHeader = 'box-warning';
-		}else{
-			myHeader = 'box-info';
-		}									
-		return (
-			
-			<div className={myHeader}>
+	useEffect(() => {
+		setInline({ message: message, message_type: message_type });
+		if (message_type === 'error') {
+			setdialogType({
+				main: 'box-danger',
+				button_type: 'box-title btn-outline-danger btn-lg',
+				check_mark: 'fa fa-close'
+			});
+		}
+		return () => {
+			setInline({ message: '', message_type: 'info' });
+		};
+	}, []);
+
+	return (
+		<Fragment>
+			<div className={dialogType.main}>
 				<div className={'box box-header'}>
-					
 					<div className={'box-tools'}>
-						<button
-							type={'button'}
-							className={'box-title btn-outline-info btn-lg'}
-						><em><i className='fa fa-check-circle'> </i> <small> {this.state.message} </small></em>
+						<button type={'button'} className={dialogType.button_type}>
+							<em>
+								<i className={dialogType.check_mark}> </i>{' '}
+								<small>{<Capitalize string={inline.message} />}</small>
+							</em>
 						</button>
 					</div>
 				</div>
 			</div>
-		);
-	}
-}
-
-
-
-InlineMessage.propTypes = {
-	message: PropTypes.string.isRequired,
-	message_type : PropTypes.string
+		</Fragment>
+	);
 };
 
 export default InlineMessage;

@@ -638,6 +638,18 @@ function EmployerDetails () {
 
 export default function EmploymentDetails () {
 	const[display,setDisplay] = useState('employer-details');
+	const [loansMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener('click', hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener('click', hideDropdownMenu);
+	};
     
 	return (
 		<Fragment>
@@ -649,28 +661,39 @@ export default function EmploymentDetails () {
 						</strong>
 					</h3>
 					<div className="box-tools">
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="employer-details"
-							onClick={() => setDisplay('employer-details')}
-						>
-							<strong>
-								<i className="fa fa-user"> </i>
-                Employer Details
-							</strong>
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="employer-address"
-							onClick={() => setDisplay('employer-address')}
-						>
-							<strong>
-								<i className="fa fa-building"> </i>
-                Employer Address
-							</strong>
-						</button>
+
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className='fa fa-bars'> </i>{' '}
+							</button>
+							{loansMenu.menu ? (
+								<ul className="dropmenu">
+									<li className="btn btn-block droplink"
+										name="employer-details"
+										onClick={() => setDisplay('employer-details')}
+									><strong>
+											<i className="fa fa-user"> </i>
+											Employer Details
+										</strong>
+									</li>
+									<li className="btn btn-block droplink"
+										name="employer-address"
+										onClick={() => setDisplay('employer-address')}
+									>
+										<strong>
+											<i className="fa fa-building"> </i>
+													Employer Address
+										</strong>
+									</li>
+
+								</ul>
+							):null}
+						</div>
+
 					</div>
 				</div>
 			
