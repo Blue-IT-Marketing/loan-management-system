@@ -245,6 +245,8 @@ function PersonalDetails({user_account}){
 
 
 function ActiveUsers(){
+	const [users,setUsers] = useState([]);
+	
 	return(
 		<Fragment>
 			<div className='box box-body'>
@@ -497,6 +499,20 @@ function AddUsers(){
 
 function UserDetails(){
 	const [display, setDisplay] = useState('add-users');
+	const [userDetailsMenu, setMenu] = useState({ menu: false });
+
+	const showDropdownMenu = e => {
+		e.preventDefault();
+		setMenu({ menu: true });
+		document.addEventListener("click", hideDropdownMenu);
+	};
+
+	const hideDropdownMenu = () => {
+		setMenu({ menu: false });
+		document.removeEventListener("click", hideDropdownMenu);
+	};
+		
+
 	
 	return (
 		<Fragment>
@@ -508,43 +524,50 @@ function UserDetails(){
 					</h3>
 
 					<div className="box-tools">
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="add-users"
-							onClick={() => setDisplay('add-users')}
-						>
-							<i className="fa fa-user-plus"> </i>
-              Add Users
-						</button>
+						<div className="dropdown">
+							<button
+								type="button"
+								className="btn btn-box-tool dropdown"
+								onClick={e => showDropdownMenu(e)}
+							>
+								<i className='fa fa-bars'> </i>{' '}
+							</button>
+							{userDetailsMenu.menu ? (
+								<ul className="dropmenu">
+									<li className="btn btn-block droplink"
+										name="add-users"
+										onClick={() => setDisplay('add-users')}
+									>
+										<i className="fa fa-user-plus"> </i>
+									Add Users
+									</li>
+									<li className="btn btn-block droplink"
+										name="active-users"
+										onClick={() => setDisplay('active-users')}
+									>
+										<i className="fa fa-user"> </i>
+											Active Users
+									</li>
+									<li className="btn btn-block droplink"
+											name="blocked-users"
+											onClick={() => setDisplay('blocked-users')}
+										>
+											<i className="fa fa-user-secret"> </i>
+										Blocked Users
+									</li>
+									<li className="btn btn-block droplink"
+										name="add-users"
+										onClick={() => setDisplay('add-users')}
+									>
+										<i className="fa fa-user-plus"> </i>
+									Add Users
+									</li>
 
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="active-users"
-							onClick={() => setDisplay('active-users')}
-						>
-							<i className="fa fa-user"> </i>
-              Active Users
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="blocked-users"
-							onClick={() => setDisplay('blocked-users')}
-						>
-							<i className="fa fa-user-secret"> </i>
-              Blocked Users
-						</button>
-						<button
-							type="button"
-							className="btn btn-box-tool"
-							name="remove-users"
-							onClick={() => setDisplay('remove-users')}
-						>
-							<i className="fa fa-user-times"> </i>
-              Remove Users
-						</button>
+
+								</ul>
+							): null 
+							}
+						</div>
 					</div>
 				</div>
 

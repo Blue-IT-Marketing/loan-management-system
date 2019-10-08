@@ -7,6 +7,7 @@ import logging,json
 from contact import Contact
 from leads import Leads
 from loans import LoanApplicantDetails
+
 class APIRouterHandler(webapp2.RequestHandler):
 
     def get(self):
@@ -133,9 +134,7 @@ class APIRouterHandler(webapp2.RequestHandler):
 
                 response_data = this_applicant.to_dict()
                 this_applicant.put()
-
                 
-
         else:
             response_data = {'message':'general error cannot understand request'}
             status_int = 501
