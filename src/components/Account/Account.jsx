@@ -32,21 +32,12 @@ let inline_init ={
 
 function PersonalDetails({user_account}){
 	
-	const [personalDetails, setPersonalDetails] = useState(extended_user);
-	
-
+	const [personalDetails, setPersonalDetails] = useState(extended_user);	
 	const [errors,setErrors] = useState(user_errors_init);
-
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
 
-	let onChangeHandler = e => {
-		setPersonalDetails({
-			...personalDetails,
-			[e.target.name]:e.target.value
-		});
-	};
 
-	let onCheckErrors = async e => {
+	const onCheckErrors = async e => {
 		let isError = false;
 
 		const check_names = () => {
@@ -94,25 +85,16 @@ function PersonalDetails({user_account}){
 		return isError;
 	};
 
-	let onUpdatePersonalDetails = async e => {
+	const onUpdatePersonalDetails = async e => {
 		console.log('Updating personal details');
 		// check for errors if found indicate the errors and exit
 		// save personal details on localStorage. then save on backend
 		//  setState = async(seed, stateKey, state);
-		try{
-			let stateKey = settings.localStorageKey + '-' + personalDetails.uid + '-' + 'user-personal-details';
-			
-			myStore.setState(personalDetails.uid,stateKey,personalDetails).then(result => {
-				console.log(result);
-			}).catch(error => {
-				console.log(error);
-			});
-		}catch(error){
-			console.error(error);
-		}
 
-		const sent_user = personalDetails;
-		console.dir("this is what i am sending", personalDetails);
+		const sent_user = JSON.stringify(personalDetails);
+		
+		console.dir("this is what i am sending", sent_user);
+
 		authAPI.updateUser(sent_user).then(response => {
 			if(response.status){
 				setPersonalDetails(response.payload);
@@ -129,19 +111,29 @@ function PersonalDetails({user_account}){
 
 	
 	useEffect(() => {
-		setPersonalDetails({
-			uid : user_account.uid,
-			email : user_account.email,
-			cell : user_account.phoneNumber
-		});
-		return () => {
+
+		const uid = user_account.uid;
+
+		authAPI.fetchUser(uid).then(response => {
+			if(response.status){
+				setPersonalDetails(response.payload);
+			}else{
+				setPersonalDetails({...personalDetails,
+					uid : user_account.uid,
+					email : user_account.email,
+					cell : user_account.phoneNumber
+				});
+			}
 			
+		}).catch(error => {
+			console.error(error);
+		});
+
+		return () => {
+			setPersonalDetails(extended_user);
 		};
-	}, []);
-	
-	console.log('USER ACCOUNT', personalDetails.uid);
-	
-	
+	}, [])
+
 	return (
 		<div className="box box-body">
 			<div className="box-header">
@@ -164,7 +156,7 @@ function PersonalDetails({user_account}){
 							name="names"
 							placeholder="Names..."
 							value={personalDetails.names}
-							onChange={e => onChangeHandler(e)}
+							onChange={e => setPersonalDetails({...personalDetails,[e.target.name]:e.target.value})}
 						/>
 						{errors.names_error ? <InlineError message={errors.names_error}/> : ''}
 					</div>
@@ -175,7 +167,7 @@ function PersonalDetails({user_account}){
 							name="surname"
 							placeholder="Surname..."
 							value={personalDetails.surname}
-							onChange={e => onChangeHandler(e)}
+							onChange={e => setPersonalDetails({...personalDetails,[e.target.name]:e.target.value})}
 						/>
 						{errors.surname_error ? <InlineError message={errors.surname_error}/> : ''}
 					</div>
@@ -186,7 +178,7 @@ function PersonalDetails({user_account}){
 							name="cell"
 							placeholder="Cell..."
 							value={personalDetails.cell}
-							onChange={e => onChangeHandler(e)}
+							onChange={e => setPersonalDetails({...personalDetails,[e.target.name]:e.target.value})}
 						/>
 						{errors.cell_error ? <InlineError message={errors.cell_error} /> : ''}
 					</div>
@@ -197,7 +189,7 @@ function PersonalDetails({user_account}){
 							name="email"
 							placeholder="Email..."
 							value={personalDetails.email}
-							onChange={e => onChangeHandler(e)}
+							onChange={e => setPersonalDetails({...personalDetails,[e.target.name]:e.target.value})}
 						/>
 						{errors.email_error ? <InlineError message={errors.email_error}/> : ''}
 					</div>

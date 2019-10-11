@@ -8,31 +8,13 @@ import { UserAccountContext } from '../../context/UserAccount/userAccountContext
 import InlineMessage from '../Forms/InlineMessage';
 import InlineError from '../Forms/InlineError';
 import { routes } from '../../constants';
+import {
+	company_init,
+	company_errors,
+	inline_init
+} from './company-constants';
 
-let company_init = {
-	company_id: '',
-	uid: '',
-	company: '',
-	reg: '',
-	fsp: '',
-	ncr: '',
-	physical: '',
-	postal: ''
-};
-
-let company_errors = {
-	uid_error: '',
-	company_error: '',
-	reg_error: '',
-	fsp_error: '',
-	ncr_error: '',
-	physical_error: '',
-	postal_error: ''
-};
-let inline_init = {
-	message: '',
-	message_type: 'INFO'
-};
+import * as companyAPI from './company-api';
 
 
 
@@ -41,6 +23,8 @@ export default function CompanyDetails() {
 	const [company, setCompany] = useState(company_init);
 	const [errors, setErrors] = useState(company_errors);
 	const [inline, setInline] = useState(inline_init);
+
+	const {user_account_state} = useContext(UserAccountContext);
 
 	async function onCheckErrors() {
 		let isError = false;
@@ -155,30 +139,29 @@ export default function CompanyDetails() {
 		});
 	}
 
-	async function onUpdateCompany(e) {
+	async function  onUpdateCompany(e) {
 		e.preventDefault();
-		try {
-			await axios
-				.post(routes.company_api_url, JSON.stringify(company))
-				.then(result => {
-					if (result.status === 200) {
-						return result.data;
-					} else {
-						throw new Error('There was an error creating company');
-					}
-				})
-				.then(company_data => {
-					setCompany(JSON.parse(company_data));
-					setInline({ message: 'a new company was successfully created' });
-				})
-				.catch(error => {					
-					setInline({ message: error.message, message_type: 'error' });
-				});
-		} catch (error) {
-			setInline({ message: error.message, message_type: 'error' });
-		}
-	}
 
+		const company_details = JSON.stringify(company);
+		const uid = user_account_state.user_account.uid;
+
+		await companyAPI.UpdateCompany(uid,company_details).then(response => {
+			if(response.status){
+				setCompany(response.payload);
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		})
+	};
+
+	useEffect(() => {
+		
+		return () => {
+			
+		};
+	}, [])
 	return (
 		<Fragment>
 			<div className="box box-body">
@@ -196,7 +179,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="company"
 								value={company.company}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="Company Name..."
 							/>
 							{errors.company_error ? (
@@ -211,7 +194,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="reg"
 								value={company.reg}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="Reg Number..."
 							/>
 							{errors.reg_error ? (
@@ -226,7 +209,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="fsp"
 								value={company.fsp}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="FSP..."
 							/>
 							{errors.fsp_error ? (
@@ -241,7 +224,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="ncr"
 								value={company.ncr}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="NCR..."
 							/>
 							{errors.ncr_error ? (
@@ -256,7 +239,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="physical"
 								value={company.physical}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="Physical Address..."
 							/>
 							{errors.physical_error ? (
@@ -270,7 +253,7 @@ export default function CompanyDetails() {
 								className="form-control"
 								name="postal"
 								value={company.postal}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setCompany({...company,[e.target.name]:e.target.value})}
 								placeholder="Postal Address..."
 							/>
 							{errors.postal_error ? (

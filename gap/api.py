@@ -8,6 +8,7 @@ from contact import Contact
 from leads import Leads
 from loans import LoanApplicantDetails
 from user import User
+from company import Company
 class APIRouterHandler(webapp2.RequestHandler):
 
     def get(self):
@@ -143,7 +144,29 @@ class APIRouterHandler(webapp2.RequestHandler):
 
                 response_data = this_applicant.to_dict()
                 this_applicant.put()
-                
+
+        elif 'company' in route:
+            uid = route[len(route) - 1]
+
+            user_instance = User()
+            this_user = user_instance.getUser(uid=uid)
+            if this_user.is_admin: 
+                company_details = json.loads(self.request.body)
+
+                company_instance = Company()
+                this_company = company_details.addCompany(company_details=company_details)
+
+                response_data = {}
+                if (this_company != ''):
+                    response_data = this_company.to_dict()
+                else:
+                    status_int = 500
+                    response_data = {'message': 'error could not create or update company'}
+            else:
+                status_int = 401
+                response_data = {'message':'user not authorized'}
+
+
         else:
             response_data = {'message':'general error cannot understand request'}
             status_int = 501
