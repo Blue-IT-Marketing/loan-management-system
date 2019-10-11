@@ -34,7 +34,7 @@ function PersonalDetails({user_account}){
 	
 	const [personalDetails, setPersonalDetails] = useState(extended_user);	
 	const [errors,setErrors] = useState(user_errors_init);
-	const[inline,setInline] = useState({message:'',message_type:'INFO'});
+	const[inline,setInline] = useState(inline_init);
 
 
 	const onCheckErrors = async e => {
@@ -115,16 +115,17 @@ function PersonalDetails({user_account}){
 		const uid = user_account.uid;
 
 		authAPI.fetchUser(uid).then(response => {
+
 			if(response.status){
 				setPersonalDetails(response.payload);
-			}else{
+			}else
+			{
 				setPersonalDetails({...personalDetails,
 					uid : user_account.uid,
 					email : user_account.email,
 					cell : user_account.phoneNumber
 				});
-			}
-			
+			}	
 		}).catch(error => {
 			console.error(error);
 		});

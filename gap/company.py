@@ -5,25 +5,26 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 import json
 import logging
+import string,random
 
 
 
 class Company(ndb.Expando):
- 	company_id = ndb.StringProperty()
-	uid = ndb.StringProperty()
-	company = ndb.StringProperty()
-	reg = ndb.StringProperty()
-	fsp = ndb.StringProperty()
-	ncr = ndb.StringProperty()
-	physical = ndb.StringProperty()
-	postal = ndb.StringProperty()
+    company_id = ndb.StringProperty()
+    uid = ndb.StringProperty()
+    company = ndb.StringProperty()
+    reg = ndb.StringProperty()
+    fsp = ndb.StringProperty()
+    ncr = ndb.StringProperty()
+    physical = ndb.StringProperty()
+    postal = ndb.StringProperty()
 
-    def create_id(self, size=64, chars=string.ascii_lowercase + string.digits):
-        return ''.join(random.choice(chars) for x in range(size))
-
+    def create_id(self,size=64,chars=string.ascii_lowercase + string.digits):
+        return ''.join(random.choice(cahrs) for x in range(size))
+    
     def addCompany(self,company_details):
 
-        company_query = Company.query(Company.uid == uid):
+        company_query = Company.query(Company.uid == uid)
         company_list = company_query.fetch()
 
         if len(company_list) > 0:

@@ -12,7 +12,7 @@ import {routes} from '../../constants';
 export const UpdateCompany = async (uid, company_details) => {
 	const results = {status:false,payload:{},error:{}};
 
-	await axios.post(routes.company_api_url, company_details).then(response => {
+	await axios.post(routes.company_api_url+`/${uid}`, company_details).then(response => {
 		if (response.status === 200) {
 			return response.data;
 		} else {

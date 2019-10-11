@@ -39,8 +39,11 @@ class APIRouterHandler(webapp2.RequestHandler):
             user_instance = User()
             this_user = user_instance.getUser(uid=uid)
             response_data = {}
-            if this_user != '':
+            if this_user != '':                
                 response_data = this_user.to_dict()
+            else:
+                status_int = 500
+                response_data = {'message': 'user not found'}
 
         else:
             response_data = {'message':'general error can not understand your request'}
