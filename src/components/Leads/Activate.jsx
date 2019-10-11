@@ -5,25 +5,22 @@ import { leads_init} from './leads-constants';
 import {routes} from '../../constants';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
+import * as leadsAPI from './leads-api';
+
 const Activate = () => {
 
 	const[leads,setLeads] = useState([]);
 	const[inline,setInline] = useState({message:'',message_type:'info'});
-
+	const[data,setData] = useState({});
 
 	const returnData = () => {
 
 		let rowdata = [];
-        
-		const parseRowData = ()  => {
-			leads.forEach(lead => {
-				rowdata.push(Object.entries(lead));
-			});
-			return true;
-		};
-        
-		parseRowData();
-
+        		
+		leads.forEach(lead => {
+			rowdata.push(Object.entries(lead));
+		});		
+	
 		const data = {
 			colums: [
 				{
@@ -41,6 +38,7 @@ const Activate = () => {
 			],
 			rows: rowdata
 		};
+
 		return data;
 	};
 
@@ -49,40 +47,26 @@ const Activate = () => {
 
 
 	useEffect(() => {        
-		const fetchAPI = async () => {
-			try{
-				await axios.get(routes.leads_api_endpoint).then(results => {
-					if(results.status === 200){
-						return results.data;
-					}else{
-						throw new Error('there was an error fetching loans-please check your internet connection');
-					}
-				}).then(leads => {
-					setLeads(leads);
-					setInline({message:'successfully loaded loans'});        
-					return true;
-				}).catch(error => {
-					setInline({message:'error : '+ error.message,message_type:'error'});
-					return false;
-				});
-			}catch(error){
-				setInline({message:'error : '+ error.message,message_type:'error'});
-				return false;
+		leadsAPI.fetchLeads().then(response => {
+			if(response.status){
+				setLeads(response.payload);
+			}else{
+				setLeads([]);
 			}
-		};
-        
-		fetchAPI().then(result => {
-			console.log('RESULTS',result);
 		});
-		
-
 		return () => {
-            
+            setLeads([]);
 		};
 	}, []);
 
-	let data = returnData();
-    
+	useEffect(() => {
+		const leads_data = returnData();
+		setData(leads_data);
+		return () => {		
+			setData({})	
+		};
+	}, [leads]);
+
 	return (
 		<Fragment>
 			<div className='box box-body'>
@@ -97,7 +81,6 @@ const Activate = () => {
 				{ data ?
 					<MDBDataTable striped bordered hover data={data} /> : ''
 				}
-
 			</div>
 		</Fragment>
             

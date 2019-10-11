@@ -5,6 +5,8 @@ import ClientsCapture from './ClientsCapture';
 import Activate from './Activate';
 import Converted from './Converted';
 
+import * as leadsAPI from './leads-api';
+
 const Leads = () => {
 	const [display, setDisplay] = useState('clients-capture');
 	
@@ -20,6 +22,7 @@ const Leads = () => {
 		setMenu({ menu: false });
 		document.removeEventListener('click', hideDropdownMenu);
 	};
+
 
 	return (
 		<Fragment>
