@@ -7,7 +7,7 @@ import logging,json
 from contact import Contact
 from leads import Leads
 from loans import LoanApplicantDetails
-
+from user import User
 class APIRouterHandler(webapp2.RequestHandler):
 
     def get(self):
@@ -31,6 +31,15 @@ class APIRouterHandler(webapp2.RequestHandler):
             response_data = []
             for loan in loans_list:
                 response_data.append(loan.to_dict())
+
+        elif 'user' in route:
+            uid = route[len(route) - 1]
+
+            user_instance = User()
+            this_user = user_instance.getUser(uid=uid)
+            response_data = {}
+            if this_user != '':
+                response_data = this_user.to_dict()
 
         else:
             response_data = {'message':'general error can not understand your request'}
@@ -147,6 +156,34 @@ class APIRouterHandler(webapp2.RequestHandler):
         self.response.write(json_data)
 
 
+    def put(self):
+        url = self.request.uri
+        route = url.split('/')
+        status_int = 200
+
+        logging.info('api running')
+
+        if 'user' in route:
+            user_details = json.loads(self.request.body)
+
+            user_instance = User()
+            this_user = user_instance.addUser(json_user=user_details)
+
+            response_data = {}
+            if this_user != '':
+                response_data = this_user.to_dict()
+            else:
+                status_int = 500
+                response_data = {'message': 'user not updated or created'}
+
+        else:
+            status_int = 404
+            response_data = {'message': 'request not found'}
+
+        self.response.headers['Content-Type'] = "application/json"
+        self.response.status_int = status_int
+        json_data = json.dumps(response_data)
+        self.response.write(json_data)
 
 app = webapp2.WSGIApplication([
     

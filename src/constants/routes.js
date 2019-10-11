@@ -51,3 +51,4 @@ export const chat_messages_api_endpoint = '/api/chat/messages';
 
 
 
+export const api_user_endpoint = "/api/user";

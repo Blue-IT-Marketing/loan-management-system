@@ -12,14 +12,11 @@ import { routes } from '../../constants';
 import CompanyDetails from './CompanyDetails';
 import {myStore} from '../../localstorage';
 import {settings} from '../../constants';
+import {extended_user} from '../Auth/auth-constants';
 
-let user_init = {
-	uid: '',
-	names: '',
-	surname: '',
-	cell: '',
-	email: '',
-};
+import * as authAPI from '../Auth/auth-api';
+
+
 let user_errors_init = {
 	names_error: '',
 	surname_error: '',
@@ -35,14 +32,8 @@ let inline_init ={
 
 function PersonalDetails({user_account}){
 	
-	const [personalDetails, setPersonalDetails] = useState({
-		uid: user_account.uid,
-		names: '',
-		surname: '',
-		cell: user_account.phoneNumber,
-		email: user_account.email
-	});
-	const { uid, names, surname, cell, email } = personalDetails;
+	const [personalDetails, setPersonalDetails] = useState(extended_user);
+	
 
 	const [errors,setErrors] = useState(user_errors_init);
 
@@ -59,28 +50,28 @@ function PersonalDetails({user_account}){
 		let isError = false;
 
 		const check_names = () => {
-			if(Utils.isEmpty(names)){
+			if(Utils.isEmpty(personalDetails.names)){
 				setErrors({...errors,names_error:'names field cannot be empty'});
 				return true;
 			}
 			return false;
 		};
 		const check_surname = () => {
-			if(Utils.isEmpty(surname)){
+			if(Utils.isEmpty(personalDetails.surname)){
 				setErrors({...errors,surname_error:'surname field cannot be empty'});
 				return true;
 			}
 			return false;
 		};
 		const check_cell = () => {
-			if(Utils.isCell(cell) === false){
+			if(Utils.isCell(personalDetails.cell) === false){
 				setErrors({...errors,cell_error:'cell number field is invalid'});
 				return true;
 			}
 			return false;
 		};
 		const check_email = () => {
-			if(Utils.validateEmail(email) === false){
+			if(Utils.validateEmail(personalDetails.email) === false){
 				setErrors({...errors,email_error:'email field is invalid'});
 				return true;
 			}
@@ -109,33 +100,48 @@ function PersonalDetails({user_account}){
 		// save personal details on localStorage. then save on backend
 		//  setState = async(seed, stateKey, state);
 		try{
-			let stateKey = settings.localStorageKey + '-' + uid + '-' + 'user-personal-details';
+			let stateKey = settings.localStorageKey + '-' + personalDetails.uid + '-' + 'user-personal-details';
 			
-			myStore.setState(uid,stateKey,personalDetails).then(result => {
+			myStore.setState(personalDetails.uid,stateKey,personalDetails).then(result => {
 				console.log(result);
 			}).catch(error => {
 				console.log(error);
 			});
-
-			await axios.put(routes.user_api_url,JSON.stringify(personalDetails)).then(result => {
-				if(result.status === 200){
-					return result.data;
-				}else{
-					throw new Error('error updating user personal details');
-				}
-			}).then(personalDetails => {
-				setPersonalDetails({personalDetails});				
-				setInline({message:'successfully update user personal details'});				
-			}).catch(error => {
-				setInline({message:error.message,message_type:'error'});
-			});
 		}catch(error){
-			setInline({ message: error.message, message_type: 'error' });
+			console.error(error);
 		}
+
+		const sent_user = personalDetails;
+		console.dir("this is what i am sending", personalDetails);
+		authAPI.updateUser(sent_user).then(response => {
+			if(response.status){
+				setPersonalDetails(response.payload);
+				setInline({ message: 'successfully update user personal details' });				
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
+
 	};
 
-	console.log('USER ACCOUNT',uid);
-
+	
+	useEffect(() => {
+		setPersonalDetails({
+			uid : user_account.uid,
+			email : user_account.email,
+			cell : user_account.phoneNumber
+		});
+		return () => {
+			
+		};
+	}, []);
+	
+	console.log('USER ACCOUNT', personalDetails.uid);
+	
+	
 	return (
 		<div className="box box-body">
 			<div className="box-header">
@@ -157,7 +163,7 @@ function PersonalDetails({user_account}){
 							className="form-control"
 							name="names"
 							placeholder="Names..."
-							value={names}
+							value={personalDetails.names}
 							onChange={e => onChangeHandler(e)}
 						/>
 						{errors.names_error ? <InlineError message={errors.names_error}/> : ''}
@@ -168,7 +174,7 @@ function PersonalDetails({user_account}){
 							className="form-control"
 							name="surname"
 							placeholder="Surname..."
-							value={surname}
+							value={personalDetails.surname}
 							onChange={e => onChangeHandler(e)}
 						/>
 						{errors.surname_error ? <InlineError message={errors.surname_error}/> : ''}
@@ -179,7 +185,7 @@ function PersonalDetails({user_account}){
 							className="form-control"
 							name="cell"
 							placeholder="Cell..."
-							value={cell}
+							value={personalDetails.cell}
 							onChange={e => onChangeHandler(e)}
 						/>
 						{errors.cell_error ? <InlineError message={errors.cell_error} /> : ''}
@@ -190,7 +196,7 @@ function PersonalDetails({user_account}){
 							className="form-control"
 							name="email"
 							placeholder="Email..."
-							value={email}
+							value={personalDetails.email}
 							onChange={e => onChangeHandler(e)}
 						/>
 						{errors.email_error ? <InlineError message={errors.email_error}/> : ''}
@@ -224,7 +230,7 @@ function PersonalDetails({user_account}){
 							onClick={() => {
 								setInline({message:'',message_type:'INFO'});
 								setErrors({...user_errors_init});
-								setPersonalDetails({...user_init});
+								setPersonalDetails({...extended_user});
 							}}
 						>
 							<strong>
@@ -265,7 +271,7 @@ function ActiveUsers(){
 function AddUsers(){
 	
      
-	const[user,setUser] = useState(user_init);
+	const[user,setUser] = useState(extended_user);
 
 	const [errors,setErrors] = useState(user_errors_init);
 
@@ -474,7 +480,7 @@ function AddUsers(){
 								className='btn btn-warning btn-lg'
 								name='reset'
 								onClick={e => {
-									setUser(user_init);
+									setUser(extended_user);
 									setErrors(user_errors_init);
 									setInline(inline_init);
 								}}
@@ -504,12 +510,12 @@ function UserDetails(){
 	const showDropdownMenu = e => {
 		e.preventDefault();
 		setMenu({ menu: true });
-		document.addEventListener("click", hideDropdownMenu);
+		document.addEventListener('click', hideDropdownMenu);
 	};
 
 	const hideDropdownMenu = () => {
 		setMenu({ menu: false });
-		document.removeEventListener("click", hideDropdownMenu);
+		document.removeEventListener('click', hideDropdownMenu);
 	};
 		
 
@@ -549,10 +555,10 @@ function UserDetails(){
 											Active Users
 									</li>
 									<li className="btn btn-block droplink"
-											name="blocked-users"
-											onClick={() => setDisplay('blocked-users')}
-										>
-											<i className="fa fa-user-secret"> </i>
+										name="blocked-users"
+										onClick={() => setDisplay('blocked-users')}
+									>
+										<i className="fa fa-user-secret"> </i>
 										Blocked Users
 									</li>
 									<li className="btn btn-block droplink"
@@ -591,12 +597,12 @@ export default function Account (){
 	const showDropdownMenu = e => {
 		e.preventDefault();
 		setMenu({ menu: true });
-		document.addEventListener("click", hideDropdownMenu);
+		document.addEventListener('click', hideDropdownMenu);
 	};
 
 	const hideDropdownMenu = () => {
 		setMenu({ menu: false });
-		document.removeEventListener("click", hideDropdownMenu);
+		document.removeEventListener('click', hideDropdownMenu);
 	};
     
 
