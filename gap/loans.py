@@ -1045,6 +1045,7 @@ class PaymentFromClient(LoanConstant):
             return False
 
 class AdvancedAmount(LoanConstant):
+    
     credit_advanced_capital = ndb.IntegerProperty()
     initiation_fee = ndb.IntegerProperty()
     monthly_service_fee = ndb.IntegerProperty()

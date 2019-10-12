@@ -42,10 +42,6 @@ const Activate = () => {
 		return data;
 	};
 
-    
-	
-
-
 	useEffect(() => {        
 		leadsAPI.fetchLeads().then(response => {
 			if(response.status){

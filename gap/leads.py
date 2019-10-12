@@ -1,13 +1,12 @@
-import os
-import webapp2
-import jinja2
+import os,webapp2,jinja2,logging,datetime
 from google.appengine.ext import ndb
 from google.appengine.api import users
-import logging
-import datetime
+
 template_env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.getcwd()))
 
+# TODO- write a utility to convert old leads records to new ones
 class Leads(ndb.Expando):
+
     uid = ndb.StringProperty()
     employee_code = ndb.StringProperty()
     lead_date = ndb.StringProperty()
