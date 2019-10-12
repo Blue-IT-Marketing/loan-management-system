@@ -3,7 +3,12 @@ import { leads_init } from "./leads-constants";
 import { routes } from "../../constants";
 import { MDBDataTable } from "mdbreact";
 import axios from "axios";
+
+import * as leadsAPI from './leads-api';
+
+
 const Converted = () => {
+
 	const [leads, setLeads] = useState([]);
 	const [inline, setInline] = useState({ message: '', message_type: 'info' });
 
@@ -12,7 +17,12 @@ const Converted = () => {
 
 		const parseRowData = () => {
 			leads.forEach(lead => {
-				rowdata.push(Object.entries(lead));
+				rowdata.push({
+					names : lead.names,
+					surname : lead.surname,
+					cell : lead.cell,
+					id : lead.id
+				});
 			});
 			return true;
 		};
@@ -22,17 +32,29 @@ const Converted = () => {
 		const data = {
 			colums: [
 				{
-					label: 'Client ID',
-					field: 'client_id',
-					sort: 'asc',
-					width: 150
+					label: 'Names',
+					field: 'names',
+					sort: 'asc',					
 				},
 				{
-					label: 'ID Number',
+					label: 'Surname',
+					field: 'surname',
+					sort: 'asc',
+					
+				},
+				{
+					label: 'Cell',
+					field: 'cell',
+					sort: 'asc',
+					
+				},
+				{
+					label: 'ID',
 					field: 'id',
 					sort: 'asc',
-					width: 270
+					
 				}
+
 			],
 			rows: rowdata
 		};
@@ -40,45 +62,18 @@ const Converted = () => {
 	};
 
 	useEffect(() => {
-		const fetchAPI = async () => {
-			try {
-				await axios
-					.get(routes.leads_api_endpoint)
-					.then(results => {
-						if (results.status === 200) {
-							return results.data;
-						} else {
-							throw new Error(
-								'there was an error fetching loans-please check your internet connection'
-							);
-						}
-					})
-					.then(leads => {
-						setLeads(leads);
-						setInline({ message: 'successfully loaded loans' });
-						return true;
-					})
-					.catch(error => {
-						setInline({
-							message: 'error : ' + error.message,
-							message_type: 'error'
-						});
-						return false;
-					});
-			} catch (error) {
-				setInline({
-					message: 'error : ' + error.message,
-					message_type: 'error'
-				});
-				return false;
+		const converted = true;
+		leadsAPI.fetchLeads(converted).then(response => {
+			if (response.status){
+				setLeads(response.payload)
+			}else{
+				setLeads([]);
 			}
-		};
-
-		fetchAPI().then(result => {
-			console.log('RESULTS', result);
+		}).catch(error => {
+			setLeads([]);
 		});
 
-		return () => {};
+		return () => setLeads([]);
 	}, []);
 
 	let data = returnData();

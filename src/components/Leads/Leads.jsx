@@ -8,7 +8,7 @@ import Converted from './Converted';
 import * as leadsAPI from './leads-api';
 
 const Leads = () => {
-	const [display, setDisplay] = useState('clients-capture');
+	const [display, setDisplay] = useState("search-activate");
 	
 	const [leadsMenu, setMenu] = useState({ menu: false });
 
@@ -47,22 +47,22 @@ const Leads = () => {
 								<ul className="dropmenu">
 									<li
 										className="btn btn-block droplink"
-										name="send-sms"
-										onClick={e => setDisplay('clients-capture')}
-									><strong>
-											<i className="fa fa-camera-retro"> </i> Clients capture
-										</strong>
-									</li>
-
-									<li
-										className="btn btn-block droplink"
 										name="search-activate"
 										onClick={e => setDisplay('search-activate')}
 									>
 										<strong>
-											<i className="fa fa-search"> </i> Search &amp; Activate
+											<i className="fa fa-search"> </i> Leads
 										</strong>
 									</li>
+									<li
+										className="btn btn-block droplink"
+										name="send-sms"
+										onClick={e => setDisplay('clients-capture')}
+									><strong>
+											<i className="fa fa-camera-retro"> </i> Add Lead
+										</strong>
+									</li>
+
 									<li
 										className="btn btn-block droplink"
 										name="search-activate"
@@ -70,7 +70,7 @@ const Leads = () => {
 										onClick={e => setDisplay('converted-leads')}
 									>
 										<strong>
-											<i className="fa fa-users"> </i> Converted Leads
+											<i className="fa fa-users"> </i> Converted
 										</strong>
 									</li>
 

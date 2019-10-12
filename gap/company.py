@@ -20,7 +20,7 @@ class Company(ndb.Expando):
     postal = ndb.StringProperty()
 
     def create_id(self,size=64,chars=string.ascii_lowercase + string.digits):
-        return ''.join(random.choice(cahrs) for x in range(size))
+        return ''.join(random.choice(chars) for x in range(size))
     
     def addCompany(self,company_details):
 

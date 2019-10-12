@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { Fragment,useEffect,useState } from 'react';
-import { leads_init} from './leads-constants';
-import {routes} from '../../constants';
-import { MDBDataTable } from 'mdbreact';
-import axios from 'axios';
 import * as leadsAPI from './leads-api';
+import DataTable from '../Tables/Tables';
 
 const Activate = () => {
 
@@ -18,22 +15,53 @@ const Activate = () => {
 		let rowdata = [];
         		
 		leads.forEach(lead => {
-			rowdata.push(Object.entries(lead));
+			rowdata.push({
+				names : lead.names,
+				surname: lead.surname,
+				cell: lead.cell,
+				email: lead.email,				
+				id: lead.id,
+				notes:lead.notes
+			});
 		});		
 	
 		const data = {
 			colums: [
 				{
-					label: 'Client ID',
-					field: 'client_id',
+					label: 'Names',
+					field: 'names',
 					sort: 'asc',
-					width: 150
+					
 				},
 				{
-					label: 'ID Number',
+					label: 'Surname',
+					field: 'surname',
+					sort: 'asc',
+					
+				},
+				{
+					label: 'Cell',
+					field: 'cell',
+					sort: 'asc',
+					
+				},
+				{
+					label: 'Email',
+					field: 'email',
+					sort: 'asc',
+					
+				},
+				{
+					label: 'ID',
 					field: 'id',
 					sort: 'asc',
-					width: 270
+					
+				},
+				{
+					label: 'Notes',
+					field: 'notes',
+					sort: 'asc',
+					
 				}
 			],
 			rows: rowdata
@@ -42,8 +70,9 @@ const Activate = () => {
 		return data;
 	};
 
-	useEffect(() => {        
-		leadsAPI.fetchLeads().then(response => {
+	useEffect(() => {      
+		const converted = false;  
+		leadsAPI.fetchLeads(converted).then(response => {
 			if(response.status){
 				setLeads(response.payload);
 			}else{
@@ -51,7 +80,7 @@ const Activate = () => {
 			}
 		});
 		return () => {
-            setLeads([]);
+			setLeads([]);
 		};
 	}, []);
 
@@ -59,7 +88,7 @@ const Activate = () => {
 		const leads_data = returnData();
 		setData(leads_data);
 		return () => {		
-			setData({})	
+			setData({});	
 		};
 	}, [leads]);
 
@@ -74,9 +103,7 @@ const Activate = () => {
 						</strong>
 					</h3>
 				</div>
-				{ data ?
-					<MDBDataTable striped bordered hover data={data} /> : ''
-				}
+				<DataTable data={data} />
 			</div>
 		</Fragment>
             

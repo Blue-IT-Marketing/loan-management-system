@@ -1,29 +1,25 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import React, { Fragment,useState,useContext } from 'react';
+import React, { Fragment,useState,useContext,useEffect } from 'react';
 import InlineError from '../Forms/InlineError';
 import InlineMessage from '../Forms/InlineMessage';
 import {Utils} from '../../utilities';
 import {leads_init,leads_init_error} from './leads-constants';
-import axios from 'axios';
-import {routes} from '../../constants';
+
+
 import {UserAccountContext} from '../../context/UserAccount/userAccountContext';
+import * as leadsAPI from './leads-api';
+
+
 
 const ClientsCapture = () => {
 	const [leads_details, setLeads] = useState(leads_init);
 	const[errors,setErrors] = useState(leads_init_error);
-	let onChangeHandler = e => {
-		setLeads({
-			...leads_details,
-			[e.target.name]:e.target.value
-		});
-	};
-
 	const[inline,setInline] = useState({message:'',message_type:'info'});
-
 	const { user_account_state } = useContext(UserAccountContext);
 
-    
+
+
 	const onCheckErrors = async e => {
 		console.log(e.target);
 		let isError = false;
@@ -34,7 +30,7 @@ const ClientsCapture = () => {
 			names,
 			id,
 			dob,
-			nationality,
+			country,
 			cell,
 			email,
 			notes
@@ -94,10 +90,10 @@ const ClientsCapture = () => {
 		};
 
 		const check_nationality = () => {
-			if (Utils.isEmpty(nationality)) {
+			if (Utils.isEmpty(country)) {
 				setErrors({
 					...errors,
-					nationality_error: 'Nationality field cannot be empty'
+					nationality_error: 'country field cannot be empty'
 				});
 				return true;
 			}
@@ -168,32 +164,29 @@ const ClientsCapture = () => {
 	};
 
 	const onSaveLead = async e => {
-		try{
 
-			await setLeads({
-				...leads_details,
-				uid:user_account_state.user_account.uid
-			});
-
-			await axios.post(routes.leads_api_endpoint,'&data='+JSON.stringify(leads_details)).then(result => {
-				if(result.status === 200){
-					return result.data;
-				}else{
-					throw new Error('there was an error saving your lead');
-				}
-			}).then(leads_details => {
+		const uid = user_account_state.user_account.uid;
+		leadsAPI.saveLeads(uid,leads_details).then(response => {
+			if(response.status){
 				setLeads(leads_details);
-				return true;
-			}).catch(error => {
-				setInline({message:error.message,message_type:'error'});
-				return false;
-			});
-		}catch(error){
-			setInline({ message: error.message, message_type: 'error' });
-			return false;
-		}
+				setInline({message:'successfully updated leads data',message_type:'info'});
+			}else{
+				setLeads({...leads_init,uid:uid});
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
 	};
 
+	useEffect(() => {
+		const uid = user_account_state.user_account.uid;
+		setLeads({...leads_details,uid : uid});
+
+		return () => {
+			
+		};
+	}, [])
 
 	return (
 		<Fragment>
@@ -218,7 +211,7 @@ const ClientsCapture = () => {
 								className="form-control"
 								name="title"
 								value={leads_details.title}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							>
 								<option value={'mr'}>MR</option>
 								<option value={'mrs'}>Mrs</option>
@@ -237,7 +230,7 @@ const ClientsCapture = () => {
 								name="names"
 								placeholder="Names..."
 								value={leads_details.names}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.names_error ? (
 								<InlineError message={errors.names_error} />
@@ -253,7 +246,7 @@ const ClientsCapture = () => {
 								name="surname"
 								placeholder="Surname..."
 								value={leads_details.surname}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.surname_error ? (
 								<InlineError message={errors.surname_error} />
@@ -268,7 +261,7 @@ const ClientsCapture = () => {
 								name="id"
 								placeholder="ID / Passport Number"
 								value={leads_details.id}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.id_error ? (
 								<InlineError message={errors.id_error} />
@@ -283,7 +276,7 @@ const ClientsCapture = () => {
 								name="dob"
 								placeholder="Date of Birth..."
 								value={leads_details.dob}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.dob_error ? (
 								<InlineError message={errors.dob_error} />
@@ -295,13 +288,13 @@ const ClientsCapture = () => {
 							<input
 								type="text"
 								className="form-control"
-								name="nationality"
-								placeholder="Nationality..."
-								value={leads_details.nationality}
-								onChange={e => onChangeHandler(e)}
+								name="country"
+								placeholder="country..."
+								value={leads_details.country}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.nationality_error ? (
-								<InlineError message={errors.nationality_error} />
+								<InlineError message={errors.country_error} />
 							) : (
 								''
 							)}
@@ -313,7 +306,7 @@ const ClientsCapture = () => {
 								name='cell'
 								placeholder='Cell'
 								value={leads_details.cell}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.cell_error ? <InlineError message={errors.cell_error} /> : ''}
 						</div>
@@ -324,7 +317,7 @@ const ClientsCapture = () => {
 								name='email'
 								placeholder='Email'
 								value={leads_details.email}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.email_error ? <InlineError message={errors.email_error}/>:''}
 						</div>
@@ -335,7 +328,7 @@ const ClientsCapture = () => {
 								name='notes'
 								placeholder='Notes'
 								value={leads_details.notes}
-								onChange={e => onChangeHandler(e)}
+								onChange={e => setLeads({...leads_details,[e.target.name]:e.target.value})}
 							/>
 							{errors.notes_error ? <InlineError message={errors.notes_error} /> : ''}
 
@@ -346,14 +339,13 @@ const ClientsCapture = () => {
 								className="btn btn-success btn-lg"
 								name="save"
 								onClick={e => {
-									onCheckErrors(e)
-										.then(result => {
-											if (result) {
-												throw new Error('there was an error processing form');
-											} else {
-												onSaveLead(e);
-											}
-										})
+									onCheckErrors(e).then(result => {
+										if (result) {
+											throw new Error('there was an error processing form');
+										} else {
+											onSaveLead(e);
+										}
+									})
 										.catch(error => {
 											// eslint-disable-next-line no-console
 											console.log(error);

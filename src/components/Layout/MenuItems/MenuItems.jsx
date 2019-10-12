@@ -48,7 +48,7 @@ const SideBarMenuAuth = () => {
 					<li>
 						<Link to={routes.loans_page}>
 							<i className="fa fa-dollar"> </i>
-							<strong>Create Loans</strong>
+							<strong>Loans</strong>
 						</Link>
 					</li>
 					<li>

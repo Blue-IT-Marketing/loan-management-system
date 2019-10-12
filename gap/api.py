@@ -18,12 +18,22 @@ class APIRouterHandler(webapp2.RequestHandler):
         logging.info('api running')
 
         if 'leads' in route:
-            leads_request = Leads.query(Leads.strConverted == False)
-            leads_list = leads_request.fetch()
 
-            response_data = []
-            for lead in leads_list:
-                response_data.append(lead.to_dict())
+            if 'converted' in route:
+                leads_request = Leads.query(Leads.converted == True)
+                leads_list = leads_request.fetch()
+
+                response_data = []
+                for lead in leads_list:
+                    response_data.append(lead.to_dict())
+            else:
+                leads_request = Leads.query(Leads.converted == False)
+                leads_list = leads_request.fetch()
+
+                response_data = []
+                for lead in leads_list:
+                    response_data.append(lead.to_dict())
+
 
         elif 'loans' in route:
             loans_request = LoanApplicantDetails.query()
@@ -79,42 +89,16 @@ class APIRouterHandler(webapp2.RequestHandler):
             response_data = this_contact.to_dict()
 
         elif 'leads' in route:
-            data = self.request.get('data')
-            json_data = json.loads(data)
-            logging.info(data)
-            uid = json_data['uid']
-            title = json_data['title']
-            surname = json_data['surname']
-            names = json_data['names']
-            id = json_data['id']
-            dob = json_data['dob']
-            nationality = json_data['nationality']
-            cell = json_data['cell']
-            email = json_data['email']
-            notes = json_data['notes']
+            leads_data = json.loads(self.request.body)
 
-            leads_request = Leads.query(Leads.id == id)
-            leads_list = leads_request.fetch()
+            leads_instance = Leads()
+            this_lead = leads_instance.addLead(leads_data=leads_data)
 
-            if len(leads_list) > 0:
-                response_data = {'message':'lead already in the system'}
-                status_int = 201
-            else:
-
-                this_lead = Leads()
-                this_lead.writeTitle(strinput=title)
-                this_lead.writeSurname(strinput=surname)
-                this_lead.writeNames(strinput=names)
-                this_lead.writeIDNumber(strinput=id)
-                this_lead.writeDateOfBirth(strinput=dob)
-                this_lead.writeCountry(strinput=nationality)
-                this_lead.writeCell(strinput=cell)
-                this_lead.writeEmail(strinput=email)
-                this_lead.writeLeadNotes(strinput=notes)
-                this_lead.writeReference(strinput=uid)
-                this_lead.put()
-
+            if this_lead != '':
                 response_data = this_lead.to_dict()
+            else:
+                status_int = 500
+                response_data = {'message': 'lead already exists'}
 
         elif 'personal' in route:
             data = self.request.get('data')
