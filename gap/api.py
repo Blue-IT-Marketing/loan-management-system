@@ -6,7 +6,7 @@ from google.appengine.api import users
 import logging,json
 from contact import Contact
 from leads import Leads
-from loans import LoanApplicantDetails
+from loans import LoanApplicantDetails, LoanConstant
 from user import User
 from company import Company
 class APIRouterHandler(webapp2.RequestHandler):
@@ -20,6 +20,7 @@ class APIRouterHandler(webapp2.RequestHandler):
         if 'leads' in route:
 
             if 'converted' in route:
+
                 leads_request = Leads.query(Leads.converted == True)
                 leads_list = leads_request.fetch()
 
@@ -36,14 +37,60 @@ class APIRouterHandler(webapp2.RequestHandler):
 
 
         elif 'loans' in route:
-            loans_request = LoanApplicantDetails.query()
-            loans_list = loans_request.fetch()
 
-            response_data = []
-            for loan in loans_list:
-                response_data.append(loan.to_dict())
+            
+            # used by loanscontext to create a loan id and assign a company to the loan
+            if 'create-loan-id' in route:
+                uid = route[len(route) - 1]
+
+                user_instance = User()
+                this_user = user_instance.getUser(uid=uid)
+                response_data = {}
+                
+                if this_user != '':
+                    company_instance = Company()
+                    this_company = company_instance.getCompany(this_user.company_id)
+                    
+                    if this_company != '':
+
+                        loan_constant_instance = LoanConstant()
+                        
+                        # this retrieves the previously active loan
+                        active_loans = loan_constant_instance.retriveActiveLoan(uid=uid)
+
+                        if len(active_loans) > 0:                            
+                            loan_constant_instance = active_loans[0]
+                        else:
+                            # this create a new loan instance
+                            loan_constant_instance.uid = uid
+                            loan_constant_instance.loan_id = loan_constant_instance.create_loan_id()
+                            loan_constant_instance.company_id = this_company.company_id
+                            loan_constant_instance.employee_code = this_user.employee_code
+                            loan_constant_instance.active_loan = True
+                            loan_constant_instance.put()
+
+                        response_data = loan_constant_instance.to_dict()                        
+                    else:
+                        status_int = 500
+                        response_data = {'message': 'cannot create loan please complete your signup procedure'}
+                else:
+                    status_int = 500
+                    response_data = {
+                        'message': 'cannot create loan please complete your signup procedure'}
+            
+            else:
+                # default get loans
+                loans_request = LoanApplicantDetails.query()
+                loans_list = loans_request.fetch()
+
+                response_data = []
+
+                for loan in loans_list:
+                    if loan.active_loan:
+                        response_data.append(loan.to_dict())
 
         elif 'user' in route:
+
             uid = route[len(route) - 1]
 
             user_instance = User()
@@ -54,6 +101,20 @@ class APIRouterHandler(webapp2.RequestHandler):
             else:
                 status_int = 500
                 response_data = {'message': 'user not found'}
+        
+        elif 'admin' in route:
+
+            uid = route[len(route) - 1]
+            response_data = []
+            if 'users' in route:
+                
+                user_instance = User()
+
+                users_list = user_instance.fetchUsers()
+
+                for user in users_list:
+                    response_data.append(user.to_dict())
+
 
         else:
             response_data = {'message':'general error can not understand your request'}

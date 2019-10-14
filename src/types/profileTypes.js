@@ -1,47 +1,5 @@
 
 
-////***************phasing this out
-
-export let profile_details_type = {
-
-	profile_name: '',
-	names: '',
-	surname: '',
-	nickname: '',
-	email: '',
-	cell: '',
-	website: '',
-	paypal_email: '',
-	introduction: '',
-	mystory: '',
-	photourl: '',
-	userid: '',
-	id_number: '',
-
-	profile_active:false,
-	profile_public:true,
-
-	likes: 0,
-	public_url: '',
-//    note add shares
-};
-
-export let profile_details_errors  = {
-	profile_name_error : '',
-	names_error : '',
-	surname_error : '',
-	nickname_error : '',
-	email_error : '',
-	cell_error : '',
-	website_error: '',
-	paypal_email_error: '',
-	introduction_error: '',
-	mystory_error: '',
-	photourl_error: '',
-	userid_error: '',
-	id_number_error: '',
-};
-
 
 //******* a user contact details type
 
@@ -64,6 +22,7 @@ export let contact_details_type = {
 	email_verification_link: '',
 	email_verified:false
 };
+
 export let contact_details_type_errors = {
 	cell_error : '',
 	email_error : '',
@@ -77,6 +36,7 @@ export let contact_details_type_errors = {
 //*********a type for user contact details sub => sending email messages
 
 export let user_email_details_type = {
+
 	user_email_id : '',
 	email_id:'',
 	to_email_address : '',
@@ -91,6 +51,7 @@ export let user_email_details_type = {
 
 
 //*************a type for contact details sub => sending sms's
+
 export let user_cell_details_type = {
 	user_cell_id : '',
 	cell_id : '',
@@ -123,6 +84,7 @@ export let personal_details_type_errors ={
 //****************** this is a type for account details
 
 export let account_details_type = {
+
 	uid : '',
 	displayName : '',
 	photoURL : '',
@@ -133,6 +95,8 @@ export let account_details_type = {
 	phoneNumber : '',
 	isAnonymous : false,
 	providerId : 'password',
+
+	employee_code : '',
 
 	signing_in : false,
 	user_signed_in : false,

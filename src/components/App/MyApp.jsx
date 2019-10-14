@@ -20,7 +20,7 @@ import Forget from '../Auth/Forget/Forget';
 import Dashboard from '../Dashboard/Dashboard';
 import Blog from '../Blog/Blog';
 import Account from '../Account/Account';
-import Profiles from '../Profile/Profiles';
+
 import Loans from '../Loans/Loans';
 import Chat from '../Chat/Chat';
 import Leads from '../Leads/Leads';
@@ -31,78 +31,90 @@ import ProtectedRoute from '../Auth/ProtectedRoute/ProtectedRoute';
 import UserAccountContextProvider from '../../context/UserAccount/userAccountContext';
 import BlogContextProvider from '../../context/blog';
 import SocketContextProvider from '../../context/socketsio';
+import LoansConstantContextProvider from '../../context/loans';
+import Admin from '../Admin/Admin';
 
 export default function App () {
 	return (
 		<UserAccountContextProvider>
 			<BlogContextProvider>
-		  <SocketContextProvider>
-					<Fragment>
-						<Router>
-							{/* Header  Component*/}
-							<Header />
-							{/* Sidebar Component */}
-							<SideBar />
-							{/* Body and Main Page Routes */}
-							<div className="content-wrapper">
-								<section className="content-header">
-									<section className="content">
-										<Switch>
-											<Route exact path={routes.home_page} component={Home} />
-											<Route exact path={routes.about_page} component={About} />
-											<Route
-												exact
-												path={routes.contact_page}
-												component={Contact}
-											/>
-											<Route path={routes.login_page} component={Login} />
-											<ProtectedRoute
-												path={routes.logout_page}
-												component={Logout}
-											/>
-											<Route path={routes.signup_page} component={Signup} />
-											<Route
-												path={routes.forget_password_page}
-												component={Forget}
-											/>
+				<SocketContextProvider>
+					<LoansConstantContextProvider>
+						<Fragment>
+							<Router>
+								{/* Header  Component*/}
+								<Header />
+								{/* Sidebar Component */}
+								<SideBar />
+								{/* Body and Main Page Routes */}
+								<div className="content-wrapper">
+									<section className="content-header">
+										<section className="content">
+											<Switch>
+												<Route exact path={routes.home_page} component={Home} />
+												<Route
+													exact
+													path={routes.about_page}
+													component={About}
+												/>
+												<Route
+													exact
+													path={routes.contact_page}
+													component={Contact}
+												/>
+												<Route path={routes.login_page} component={Login} />
+												<ProtectedRoute
+													path={routes.logout_page}
+													component={Logout}
+												/>
+												<Route path={routes.signup_page} component={Signup} />
+												<Route
+													path={routes.forget_password_page}
+													component={Forget}
+												/>
 
-											<Route path={routes.blog_page} component={Blog} />
-											<ProtectedRoute
-												path={routes.dashboard_page}
-												component={Dashboard}
-											/>
+												<Route path={routes.blog_page} component={Blog} />
+												<ProtectedRoute
+													path={routes.dashboard_page}
+													component={Dashboard}
+												/>
 
-											<ProtectedRoute
-												path={routes.profiles}
-												component={Profiles}
-											/>
+												<ProtectedRoute
+													path={routes.loans_page}
+													component={Loans}
+												/>
+												<ProtectedRoute
+													path={routes.active_loans_page}
+													component={ActiveLoans}
+												/>
+												<ProtectedRoute
+													path={routes.chat_page}
+													component={Chat}
+												/>
+												<ProtectedRoute
+													path={routes.leads_page}
+													component={Leads}
+												/>
+												<ProtectedRoute
+													exact
+													path={routes.account_page}
+													component={Account}
+												/>
 
-											<ProtectedRoute
-												path={routes.loans_page}
-												component={Loans}
-											/>
-											<ProtectedRoute
-												path={routes.active_loans_page}
-												component={ActiveLoans}
-											/>
-											<ProtectedRoute path={routes.chat_page} component={Chat} />
-											<ProtectedRoute
-												path={routes.leads_page}
-												component={Leads}
-											/>
-											<ProtectedRoute
-												exact
-												path={routes.admin_page}
-												component={Account}
-											/>
-										</Switch>
+                        <ProtectedRoute
+                          exact
+                          path={routes.admin_page}
+                          component={Admin}
+                        />
+											</Switch>
+										</section>
 									</section>
-								</section>
-							</div>
-							{/* Footer Component  */}
-							<Footer />
-						</Router>
-					</Fragment>
+								</div>
+								{/* Footer Component  */}
+								<Footer />
+							</Router>
+						</Fragment>
+					</LoansConstantContextProvider>
 				</SocketContextProvider>
 			</BlogContextProvider>
 		</UserAccountContextProvider>

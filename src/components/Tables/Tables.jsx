@@ -1,12 +1,11 @@
 import React from 'react';
-import { MDBDataTable } from 'mdbreact';
+import { MDBDataTable } from "mdbreact";
 
 const DataTable = ({data}) => 
 	<MDBDataTable 
 		striped 
 		bordered 
-		hover 
-		responsive 
+		hover 		
 		data={data} 
 	/>
 

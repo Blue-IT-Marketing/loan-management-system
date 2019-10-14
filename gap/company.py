@@ -45,7 +45,66 @@ class Company(ndb.Expando):
 
         return this_company
 
+    def getCompany(self,company_id):
 
+        company_query = Company.query(Company.company_id == company_id)
+        company_list = company_query.fetch()
 
-        
+        if len(company_list) > 0 :
+            company = company_list[0]
+            return company
+        else:
+            return ''
 
+            
+class CompanyCoffers(ndb.Expando):
+    
+    company_id = ndb.StringProperty()
+    branch_code = ndb.StringProperty()
+    cash_available = ndb.IntegerProperty()
+    cash_in_bank = ndb.IntegerProperty()
+
+    def depositCashInBank(self, strinput):
+        try:
+            strinput = str(strinput)
+            if strinput.isdigit():
+                self.cash_in_bank = self.cash_in_bank + int(strinput)
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def withdrawCashFromBank(self, strinput):
+        try:
+            strinput = str(strinput)
+            if strinput.isdigit():
+                self.cash_in_bank = self.cash_in_bank - int(strinput)
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def depositCashAvailable(self, strinput):
+        try:
+            strinput = str(strinput)
+
+            if strinput.isdigit():
+                self.cash_available = self.cash_available + int(strinput)
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def withDrawCashAvailable(self, strinput):
+        try:
+            strinput = str(strinput)
+            if strinput.isdigit():
+                self.cash_available = self.cash_available - int(strinput)
+                return True
+            else:
+                return False
+        except:
+            return False

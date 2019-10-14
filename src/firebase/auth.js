@@ -28,8 +28,17 @@ export const doSignInWithEmailAndPassword = async (username, password) => {
 	let result;
 	try {
 		let {user} = await auth.signInWithEmailAndPassword(username, password);
-		let user_account = {...account_details_type};
-		user_account = {...user};
+		let user_account = {
+			...account_details_type,
+			uid: user.uid,
+			displayName: user.displayName,
+			photoURL: user.photoURL,
+			email: user.email,
+			password: user.password,
+			emailVerified: user.emailVerified,
+			phoneNumber: user.phoneNumber
+    	};
+		
 		user_account.user_signed_in = true;
 		result = {status: true, response: {...user_account}};
 	}catch (e) {

@@ -13,6 +13,7 @@ export const account_page = '/account';
 export const blog_page = '/blog';
 
 export const admin_page = '/admin-user'; // + userid
+
 export const loans_page = '/admin-loans';
 export const active_loans_page = '/admin-loans-active';
 export const chat_page = '/admin-chat';
@@ -52,4 +53,5 @@ export const chat_messages_api_endpoint = '/api/chat/messages';
 
 
 export const api_user_endpoint = "/api/user";
+export const api_admin_endpoint = '/api/admin/users';
 

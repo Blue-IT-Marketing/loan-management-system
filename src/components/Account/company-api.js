@@ -51,5 +51,8 @@ export const fetchCompany = async uid => {
 	});
 
 	return results;
-}
+};
+
+
+
 

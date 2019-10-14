@@ -4,7 +4,10 @@ from google.appengine.ext import ndb
 
 
 class User(ndb.Expando):
+    # TODO implement this in every user
+    company_id = ndb.StringProperty()
     uid = ndb.StringProperty() 
+    employee_code = ndb.StringProperty()
     names = ndb.StringProperty()
     surname = ndb.StringProperty()
     email = ndb.StringProperty()
@@ -27,6 +30,7 @@ class User(ndb.Expando):
                 this_user = User()
 
             this_user.uid = json_user['uid']
+            this_user.employee_code = json_user['employee_code']
             this_user.names = json_user['names']
             this_user.surname = json_user['surname']
             this_user.email = json_user['email']
@@ -95,6 +99,11 @@ class User(ndb.Expando):
         return result
 
 
+    def fetchUsers(self):
 
+        users_requests = User.query()
+        users_list = users_requests.fetch()
+
+        return users_list
 
 

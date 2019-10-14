@@ -15,6 +15,7 @@ const ActiveLoans = () => {
 	const returnData = async () => {
 
 		const prepareLoans = () => {
+			
 			let preparedLoans = [];
 
 			loans.forEach(loan => {        
@@ -87,17 +88,15 @@ const ActiveLoans = () => {
 
 	useEffect(() => {
 		const fetchAPI = async () => {
-			await axios
-				.get(routes.loans_api_endpoint)
-				.then(results => {
-					if (results.status === 200) {
-						return results.data;
-					} else {
-						throw new Error(
-							'there was an error fetching loans-please check your internet connection'
-						);
-					}
-				})
+			await axios.get(routes.loans_api_endpoint).then(results => {
+				if (results.status === 200) {
+					return results.data;
+				} else {
+					throw new Error(
+						'there was an error fetching loans-please check your internet connection'
+					);
+				}
+			})
 				.then(loans => {
 					let comp_loan = mapToLoans(loans);
 					setLoans(comp_loan);

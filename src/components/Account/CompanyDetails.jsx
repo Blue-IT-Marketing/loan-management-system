@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import Switch from 'react-switch';
-import axios from 'axios';
 import { Utils } from '../../utilities';
 
 import { UserAccountContext } from '../../context/UserAccount/userAccountContext';

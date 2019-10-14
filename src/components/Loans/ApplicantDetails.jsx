@@ -22,6 +22,8 @@ import {
 	next_of_kin_init_error
 } from './loans-constants';
 
+import * as loansAPI from './loans-api';
+
 // eslint-disable-next-line no-unused-vars
 const PersonalDetails = () => {
 	
@@ -142,34 +144,20 @@ const PersonalDetails = () => {
 	};
 
 	const onSavePersonalDetails = async e => {
+		
+		
 
-
-		try{
-			await axios.post(routes.loan_personal_details_api_url, '&data='+ JSON.stringify(personal_details))
-				.then(result => {
-					if (result.status === 200) {
-						return result.data;
-					} else {
-						throw new Error('There was an error saving personal details');
-					}
-				})
-				.then(personal_details => {
-					setPersonalDetails({...personal_details });
-					setInline({
-						message:
-					'Successfully saved personal details, continue adding more client data'
-					});
-				})
-				.catch(error => {
-					console.log(error);
-					setInline({ message: error.message, message_type: 'error' });
-				});
-
-		}catch(error){
-			console.log(error);
-			setInline({ message: error.message, message_type: 'error' });			
-		}
 	};
+
+	useEffect(() => {
+		const uid = user_account_state.user_account.uid;		
+		loansAPI.createLoanID(uid).then(response => {
+			
+		})
+	  return () => {
+		
+	  };
+	}, [])
 
 	return (
 		<Fragment>
@@ -1239,6 +1227,8 @@ const ApplicantDetails = () => {
 		setMenu({ menu: false });
 		document.removeEventListener("click", hideDropdownMenu);
 	};
+
+
 
 	return (
 		<Fragment>

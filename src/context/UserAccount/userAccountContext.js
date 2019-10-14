@@ -10,11 +10,12 @@ import {
 
 export const UserAccountContext = createContext();
 export default class UserAccountContextProvider extends Component {
+
     state = {user_account_state: {...UserAccountInitState}};
 
     doLogin = async (username,password) => {
       let user_account_state = await loginUser(username,password);
-      this.setState({user_account_state});
+        this.setState({user_account_state});
       return user_account_state;
     }
 
@@ -24,9 +25,10 @@ export default class UserAccountContextProvider extends Component {
         user_account_state
       });
       return user_account_state;
-    }
+    };
 
     doSendEmailVerification = async() => {
+      
         if (this.state.user_account_state.user_account.emailVerified){
           console.log('Cannot send verification email account already verified');
         }else{
@@ -39,7 +41,11 @@ export default class UserAccountContextProvider extends Component {
           }
 
         return this.state.user_account_state;
-    }
+    };
+
+    fetchEmployeeCode = async(uid) => {
+
+    };
 
     onChange = (user) => {
       let {
@@ -47,23 +53,33 @@ export default class UserAccountContextProvider extends Component {
       } = this.state.user_account_state;
 
       let user_account_state = Object.assign({},this.state.user_account_state)
+      
       user_account_state.user_account = {
-        ...user
+        ...user_account_state.user_account,
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        email: user.email,
+        password: user.password,
+        emailVerified: user.emailVerified,        
+        phoneNumber: user.phoneNumber,
       };
+
+
 
       this.setState({
         user_account_state
-      })
+      });
     }
 
   componentWillMount = () => {
     // const unsubscribe = firebase.auth().onAuthStateChanged(this.onChange);    
-    const dounsubscribe = firebase.firebase.auth().onAuthStateChanged(this.onChange)
-  }  
+    const dounsubscribe = firebase.firebase.auth().onAuthStateChanged(this.onChange);
+  };  
 
   componentWillUnmount = () => {
     // actually unsubscribe here
-  }
+  };
 
   render() {
     return (

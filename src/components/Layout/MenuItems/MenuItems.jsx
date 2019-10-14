@@ -34,7 +34,7 @@ const SideBarMenuAuth = () => {
 				</Link>
 				<ul className="treeview-menu">
 					<li>
-						<Link to={routes.admin_page} title="manage your Account">
+						<Link to={routes.account_page} title="manage your Account">
 							<i className="fa fa-sign-in"> </i> <strong> Account</strong>{' '}
 						</Link>{' '}
 					</li>
@@ -75,6 +75,12 @@ const SideBarMenuAuth = () => {
 					<i className="fa fa-dashboard"> </i> <strong>Dashboard</strong>
 				</Link>
 			</li>
+			<li>
+				<Link to={routes.admin_page} title="Dashboard">
+					<i className="fa fa-cogs"> </i> <strong>Admin</strong>
+				</Link>
+			</li>
+
 			<li>
 				<Link to={routes.logout_page} title="Logout">
 					<i className="fa fa-sign-out"> </i> <strong> Logout </strong>
