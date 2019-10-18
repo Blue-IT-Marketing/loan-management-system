@@ -42,6 +42,7 @@ class APIRouterHandler(webapp2.RequestHandler):
             # used by loanscontext to create a loan id and assign a company to the loan
             if 'create-loan-id' in route:
                 uid = route[len(route) - 1]
+                employee_code = route[len(route) - 2]
 
                 user_instance = User()
                 this_user = user_instance.getUser(uid=uid)

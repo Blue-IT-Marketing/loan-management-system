@@ -28,7 +28,9 @@ const LoansConstantContextProvider = props => {
 	const {user_account_state} = useContext(UserAccountContext);
 
 	useEffect(() => {
+		
 		const uid = user_account_state.user_account.uid;
+
 		loansAPI.createLoanID(uid).then(response => {
 			if (response.status){
 				setLoansConstant(response.payload);

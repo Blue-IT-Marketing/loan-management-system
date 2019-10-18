@@ -8,6 +8,7 @@ import axios from 'axios';
 import { routes } from '../../constants';
 
 import {UserAccountContext} from '../../context/UserAccount/userAccountContext';
+import {LoansConstantContext} from '../../context/loans';
 
 import {
 	personal_details_init,
@@ -31,11 +32,12 @@ const PersonalDetails = () => {
 	const[errors,setErrors] = useState(personal_details_errors_init);
 	const[inline,setInline] = useState({message:'',message_type:'INFO'});
 	const { user_account_state } = useContext(UserAccountContext);
+	const { loans_constant } = useContext(LoansConstantContext);
 
 	const onChangeHandler = e =>{
 		setPersonalDetails({
 			...personal_details,
-			[e.target.name]:e.target.value
+			[e.target.name]:e.target.values
 		});
 	};
 
@@ -63,7 +65,7 @@ const PersonalDetails = () => {
 		};
         
 		const check_surname = () => {
-			if (Utils.isEmpty(personal_details.surname)){
+			if (Utils.isEmpty(surname)){
 				setErrors({
 					...errors,
 					surname_error:'Surname field cannot be empty'
@@ -144,20 +146,43 @@ const PersonalDetails = () => {
 	};
 
 	const onSavePersonalDetails = async e => {
+		const applicant_details = JSON.stringify(personal_details);
+
 		
+
+		await loansAPI.savePersonalDetails(applicant_details).then(response => {
+			if (response.status){
+				setInline({message:'successfully saved applicant personal details'});
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:'error saving client personal details',message_type:'error'});
+		});
 		
 
 	};
 
 	useEffect(() => {
-		const uid = user_account_state.user_account.uid;		
-		loansAPI.createLoanID(uid).then(response => {
-			
-		})
+		// remember loans id is managed by a context
+	  	const loan_id = loans_constant.loan_id;
+		loansAPI.getApplicantPersonalDetails(loan_id).then(response => {
+			if(response.status){
+				setPersonalDetails({
+					personal_details,
+					uid : response.payload.uid,
+					loan_id : response.payload.loan_id
+				});
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		}); 		
 	  return () => {
-		
+			setPersonalDetails(personal_details_init);
 	  };
-	}, [])
+	}, []);
 
 	return (
 		<Fragment>
@@ -263,22 +288,28 @@ const PersonalDetails = () => {
 							className="btn btn-success btn-lg"
 							name="save"
 							onClick={e => {
-								onCheckErrors(e)
-									.then(result => {
-										if (result) {
-											throw new Error('there was an error processing form');
-										} else {
-											onSavePersonalDetails(e);
-										}
-									})
-									.catch(error => {
-										// eslint-disable-next-line no-console
-										console.log(error);
-										setInline({
-											message: error.message,
-											message_type: 'error'
+								onCheckErrors(e).then(isError => {
+									if (isError) {
+										throw new Error('there was an error processing form');
+									} else {
+										onSavePersonalDetails(e).then(results => {
+											console.log(result);
+										}).catch(error => {
+											setInline({
+												message: error.message,
+												message_type: 'error'
+											});
+
 										});
+									}
+								}).catch(error => {
+									// eslint-disable-next-line no-console
+									console.log(error);
+									setInline({
+										message: error.message,
+										message_type: 'error'
 									});
+								});
 							}}
 						>
 							<strong>
@@ -1220,12 +1251,12 @@ const ApplicantDetails = () => {
 	const showDropdownMenu = e => {
 		e.preventDefault();
 		setMenu({ menu: true });
-		document.addEventListener("click", hideDropdownMenu);
+		document.addEventListener('click', hideDropdownMenu);
 	};
 
 	const hideDropdownMenu = () => {
 		setMenu({ menu: false });
-		document.removeEventListener("click", hideDropdownMenu);
+		document.removeEventListener('click', hideDropdownMenu);
 	};
 
 

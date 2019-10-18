@@ -29,6 +29,27 @@ export const savePersonalDetails = async personal_details => {
 	return results;
 };
 
+export const getApplicantPersonalDetails = async loan_id => {
+	const results = {status : true,payload:{},error:{}};
+
+	await axios.get(routes.loan_personal_details_api_url + `${loan_id}`).then(response => {
+		if (response.status === 200){ 
+			return response.data
+		}else{
+			throw new Error('there was an error fetching applicant details');
+		}
+	}).then(applicant_details => {
+		results.status = true;
+		results.payload = { ...applicant_details };
+		results.error = {};
+	}).catch(error => {
+		results.status = false;
+		results.payload = {};
+		results.error = {...error};
+	});
+	return results;
+};
+
 
 export const createLoanID = async (uid,employee_code) => {
 	const results = { status: true, payload: {}, error: {} };
