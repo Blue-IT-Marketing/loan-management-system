@@ -27,10 +27,9 @@ const LoansConstantContextProvider = props => {
 
 	const {user_account_state} = useContext(UserAccountContext);
 
-	useEffect(() => {
-		
+	useEffect(() => {		
 		const uid = user_account_state.user_account.uid;
-
+		
 		loansAPI.createLoanID(uid).then(response => {
 			if (response.status){
 				setLoansConstant(response.payload);
@@ -38,8 +37,10 @@ const LoansConstantContextProvider = props => {
 				setLoansConstant(loans_constant_init);
 			}
 		}).catch(error => {
+			console.log('Error setting loan constant',error.message);
 			setLoansConstant(loans_constant_init);
 		});
+		
 		return () => {
 			setLoansConstant(loans_constant_init);
 		};

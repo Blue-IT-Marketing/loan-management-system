@@ -78,7 +78,22 @@ class APIRouterHandler(webapp2.RequestHandler):
                     status_int = 500
                     response_data = {
                         'message': 'cannot create loan please complete your signup procedure'}
-            
+
+            elif "client" in route:
+                response_data = {}
+                if "personal" in route:
+                    loan_id = route[len(route) - 1]
+
+                    this_applicant_instance = LoanApplicantDetails()
+                    personal_details = this_applicant_instance.returnPersonalDetailsByLoanID(loan_id=loan_id)
+
+                    if len(personal_details) > 0:
+                        response_data = personal_details[0].to_dict()
+
+                
+
+
+
             else:
                 # default get loans
                 loans_request = LoanApplicantDetails.query()
@@ -162,37 +177,31 @@ class APIRouterHandler(webapp2.RequestHandler):
                 status_int = 500
                 response_data = {'message': 'lead already exists'}
 
-        elif 'personal' in route:
-            data = self.request.get('data')
-            json_data = json.loads(data)
-            uid = json_data['uid']
-            loan_id = json_data['loan_id']
-            title = json_data['title']
-            surname = json_data['surname']
-            names = json_data['names']
-            id = json_data['id']
-            dob = json_data['dob']
-            nationality = json_data['nationality']
+        elif "loans" in route:
+            response_data = {}
+            if "client" in route:
+                if 'personal' in route:
+                    
+                    personal_details = json.loads(self.request.body)
 
-            applicant_request = LoanApplicantDetails.query(LoanApplicantDetails.id == id)
-            applicant_list = applicant_request.fetch()
+                    personal_details_instance = LoanApplicantDetails()
+                    loan_applicant = personal_details_instance.addLoanApplication(applicant_details=personal_details)
 
-            if len(applicant_list) > 0:
-                response_data = {'message': 'loan applicant aready exist'}
-                status_int = 201
-            else:
-                this_applicant = LoanApplicantDetails()
-                this_applicant.writeReference(strinput=uid)
-                this_applicant.writeAccountNumber(strinput=loan_id)
-                this_applicant.writeTitle(strinput=title)
-                this_applicant.writeSurname(strinput=surname)
-                this_applicant.writeFullNames(strinput=names)
-                this_applicant.writeIDNumber(strinput=id)
-                this_applicant.writeDateOfBirth(strinput=dob)
-                this_applicant.writeNationality(strinput=nationality)
+                    if loan_applicant != "":
+                        response_data = loan_applicant.to_dict()                     
+                    else:
+                        status_int = 500
+                        response_data = {'message': 'error creating loan applicant cause applicant already exist'}
 
-                response_data = this_applicant.to_dict()
-                this_applicant.put()
+
+
+
+
+
+
+
+
+            
 
         elif 'company' in route:
             uid = route[len(route) - 1]

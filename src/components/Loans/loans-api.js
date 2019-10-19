@@ -32,7 +32,7 @@ export const savePersonalDetails = async personal_details => {
 export const getApplicantPersonalDetails = async loan_id => {
 	const results = {status : true,payload:{},error:{}};
 
-	await axios.get(routes.loan_personal_details_api_url + `${loan_id}`).then(response => {
+	await axios.get(routes.loan_personal_details_api_url + `/${loan_id}`).then(response => {
 		if (response.status === 200){ 
 			return response.data
 		}else{

@@ -67,6 +67,7 @@ class LoanApplicantDetails(LoanConstant):
     allps = ndb.StringProperty()
 
     def addLoanApplication(self,applicant_details):
+            # user identity document id
             id = applicant_details['id']
 
             applicant_request = LoanApplicantDetails.query( LoanApplicantDetails.id == id)
@@ -111,6 +112,13 @@ class LoanApplicantDetails(LoanConstant):
         applicant_details_list = application_details_query.fetch()
 
         return applicant_details_list
+
+    def returnPersonalDetailsByLoanID(self,loan_id):
+        application_details_query = LoanApplicantDetails.query(LoanApplicantDetails.loan_id == loan_id)
+        applicant_details_list = application_details_query.fetch()
+
+        return applicant_details_list
+
 
     def removePersonalDetailsByLoanID(self,loan_id):
         application_details_query = LoanApplicantDetails.query(LoanApplicantDetails.loan_id == loan_id)

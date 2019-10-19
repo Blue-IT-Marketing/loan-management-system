@@ -37,24 +37,17 @@ const PersonalDetails = () => {
 	const onChangeHandler = e =>{
 		setPersonalDetails({
 			...personal_details,
-			[e.target.name]:e.target.values
+			[e.target.name]:e.target.value
 		});
 	};
 
 	const onCheckErrors = async e => {
 		console.log(e.target);
 		let isError = false;
-		const {
-			title,
-			surname,
-			names,
-			id,
-			dob,
-			nationality
-		} = personal_details;
+
 
 		const check_title = () =>{
-			if(Utils.isEmpty(title)){
+			if(Utils.isEmpty(personal_details.title)){
 				setErrors({
 					...errors,
 					title_error : 'Please select title'
@@ -65,10 +58,10 @@ const PersonalDetails = () => {
 		};
         
 		const check_surname = () => {
-			if (Utils.isEmpty(surname)){
+			if (Utils.isEmpty(personal_details.surname)) {
 				setErrors({
 					...errors,
-					surname_error:'Surname field cannot be empty'
+					surname_error: 'Surname field cannot be empty'
 				});
 				return true;
 			}
@@ -76,7 +69,7 @@ const PersonalDetails = () => {
 		};
 
 		const check_names = () => {
-			if (Utils.isEmpty(names)){
+			if (Utils.isEmpty(personal_details.names)){
 				setErrors({
 					...errors,
 					names_error:'Names field cannot be empty'
@@ -86,20 +79,20 @@ const PersonalDetails = () => {
 			return false;
 		};
 		const check_id = () => {
-			if (Utils.isIDNumber(id) === false){
+			if (Utils.isIDNumber(personal_details.id) === false) {
 				setErrors({
 					...errors,
-					id_error:'ID Number is invalid'
+					id_error: 'ID Number is invalid'
 				});
 				return true;
 			}
 			return false;
 		};
 		const check_dob = () => {
-			if(Utils.isEmpty(dob)){
+			if (Utils.isEmpty(personal_details.dob)) {
 				setErrors({
 					...errors,
-					dob_error:' Date of birth field cannot be empty'
+					dob_error: ' Date of birth field cannot be empty'
 				});
 				return true;
 			}
@@ -107,10 +100,10 @@ const PersonalDetails = () => {
 		};
 
 		const check_nationality = () => {
-			if(Utils.isEmpty(nationality)){
+			if (Utils.isEmpty(personal_details.nationality)) {
 				setErrors({
 					...errors,
-					nationality_error : 'Nationality field cannot be empty'
+					nationality_error: 'Nationality field cannot be empty'
 				});
 				return true;
 			}
@@ -157,7 +150,7 @@ const PersonalDetails = () => {
 				setInline({message:response.error.message,message_type:'error'});
 			}
 		}).catch(error => {
-			setInline({message:'error saving client personal details',message_type:'error'});
+			setInline({message:error.message,message_type:'error'});
 		});
 		
 
@@ -293,7 +286,7 @@ const PersonalDetails = () => {
 										throw new Error('there was an error processing form');
 									} else {
 										onSavePersonalDetails(e).then(results => {
-											console.log(result);
+											console.log(results);
 										}).catch(error => {
 											setInline({
 												message: error.message,
