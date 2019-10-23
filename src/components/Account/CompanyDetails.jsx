@@ -155,11 +155,23 @@ export default function CompanyDetails() {
 	};
 
 	useEffect(() => {
-		
+		const uid = user_account_state.user_account.uid;
+		companyAPI.fetchCompany(uid).then(response => {
+			if (response.status){
+				setCompany(response.payload);
+			}else{
+				setCompany(company_init);
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
+
 		return () => {
-			
+			setCompany(company_init);			
 		};
-	}, [])
+
+	}, []);
+	
 	return (
 		<Fragment>
 			<div className="box box-body">

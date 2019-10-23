@@ -24,7 +24,7 @@ class Company(ndb.Expando):
     
     def addCompany(self,company_details):
 
-        company_query = Company.query(Company.uid == uid)
+        company_query = Company.query(Company.uid == company_details['uid'])
         company_list = company_query.fetch()
 
         if len(company_list) > 0:
@@ -42,6 +42,8 @@ class Company(ndb.Expando):
         this_company.postal = company_details['postal']
 
         this_company.put()
+
+        
 
         return this_company
 

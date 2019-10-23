@@ -7,10 +7,10 @@
 import axios from 'axios';
 import { routes } from '../../constants';
 
-export const savePersonalDetails = async personal_details => {
+export const savePersonalDetails = async applicant_details => {
 	const results = {status:true,payload:{},error:{}};
 
-	await axios.post(routes.loan_personal_details_api_url,personal_details).then(response => {
+	await axios.post(routes.loan_personal_details_api_url,applicant_details).then(response => {
 		if(response.status === 200){
 			return response.data;
 		}else{

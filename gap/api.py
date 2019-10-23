@@ -131,6 +131,43 @@ class APIRouterHandler(webapp2.RequestHandler):
                 for user in users_list:
                     response_data.append(user.to_dict())
 
+        elif 'company' in route:
+
+            if 'get-company' in route:
+                uid = route[len(route) - 1]
+
+                user_instance = User()
+                this_user = user_instance.getUser(uid=uid)
+                response_data = {}
+                if this_user != '':
+                    company_instance = Company()
+                    this_company = company_instance.getCompany(company_id=this_user.company_id)
+                    response_data = this_company.to_dict()
+                else:
+                    status_int = 500
+                    response_data = {'message':'error fetching company details user record is undefined'}
+            elif 'users' in route:
+                uid = route[len(route) - 1]
+                company_id = route[len(route) - 2]
+
+                user_instance = User()
+                this_user = user_instance.getUser(uid=uid)
+
+                if this_user != '' and this_user.is_admin:
+                    users_list = user_instance.fetchCompanyUsers(company_id=company_id)
+
+                    response_data = []
+
+                    for user in users_list:
+                        response_data.append(user.to_dict())
+                else:
+                    status_int = 500
+                    response_data = {'message':'you are not authorized to view users records'}                        
+
+            else:
+
+                status_int = 500
+                response_data = {'message': 'error cannot understand your request'}
 
         else:
             response_data = {'message':'general error can not understand your request'}
@@ -193,29 +230,25 @@ class APIRouterHandler(webapp2.RequestHandler):
                         status_int = 500
                         response_data = {'message': 'error creating loan applicant cause applicant already exist'}
 
-
-
-
-
-
-
-
-
-            
-
         elif 'company' in route:
+
             uid = route[len(route) - 1]
 
             user_instance = User()
             this_user = user_instance.getUser(uid=uid)
+            
             if this_user.is_admin: 
                 company_details = json.loads(self.request.body)
 
                 company_instance = Company()
-                this_company = company_details.addCompany(company_details=company_details)
+                this_company = company_instance.addCompany(company_details=company_details)
 
                 response_data = {}
+
                 if (this_company != ''):
+                    # updating users company reference
+                    this_user.company_id = this_company.company_id                    
+                    this_user.put() 
                     response_data = this_company.to_dict()
                 else:
                     status_int = 500
@@ -224,7 +257,34 @@ class APIRouterHandler(webapp2.RequestHandler):
                 status_int = 401
                 response_data = {'message':'user not authorized'}
 
+        elif 'user' in route:
 
+            if 'send-invite' in route:
+                uid = route[len(route) - 1]
+                email_details = json.loads(self.request.body)
+
+                user_instance = User()
+                this_user = user_instance.getUser(uid=uid)
+
+                if (this_user.is_admin):
+
+                    result = this_user.sendInvite(email_details=email_details)
+                    if result:
+                        response_data = {'message':'successfully sent invitation'}
+                    else:
+                        status_int = 500
+                        response_data = {'message':'error sending invitation please try again later'}
+                else:
+                    status_int = 500
+                    response_data = {'message':'you are not authorized to send out user invitations'}
+            else:
+                status_int = 500
+                response_data = {
+                    'message': 'unable to understand your request'}
+
+
+
+                
         else:
             response_data = {'message':'general error cannot understand request'}
             status_int = 501

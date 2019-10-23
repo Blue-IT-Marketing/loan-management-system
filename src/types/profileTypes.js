@@ -103,9 +103,7 @@ export let account_details_type = {
 	user_deleted : false,
 	password_changed : false,
 	email_verification_sent : false,
-	onetime_pin_sent: false,
-
-
+	onetime_pin_sent: false
 };
 
 export let account_details_type_error = {

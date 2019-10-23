@@ -1,5 +1,5 @@
 
-import os,logging,datetime
+import os,logging,datetime,string,random
 from google.appengine.ext import ndb
 
 
@@ -16,6 +16,14 @@ class User(ndb.Expando):
     repeatpassword = ndb.StringProperty() 
     is_admin = ndb.BooleanProperty(default=False)
 
+    def sendInvite(self,email_details):
+        logging.info(email_details)
+        # TODO- create a function to send emails via requests, through my sa-sms api
+        return True
+
+    def create_employee_code(self, size=6, chars=string.ascii_lowercase + string.digits):
+        return ''.join(random.choice(chars) for x in range(size))
+
 
     def addUser(self,json_user):
 
@@ -28,9 +36,9 @@ class User(ndb.Expando):
                 this_user = user_list[0]
             else:
                 this_user = User()
+                # this_user.employee_code = this_user.create_employee_code()
 
-            this_user.uid = json_user['uid']
-            this_user.employee_code = json_user['employee_code']
+            this_user.uid = json_user['uid']            
             this_user.names = json_user['names']
             this_user.surname = json_user['surname']
             this_user.email = json_user['email']
@@ -44,7 +52,7 @@ class User(ndb.Expando):
         except:
             return ''
 
-        
+    
 
     def updateUser(self,json_user):
         try:
@@ -97,13 +105,19 @@ class User(ndb.Expando):
             result = ""
 
         return result
-
-
     def fetchUsers(self):
 
         users_requests = User.query()
         users_list = users_requests.fetch()
 
         return users_list
+
+    def fetchCompanyUsers(self,company_id):
+        users_requests = User.query(User.company_id == company_id)
+        users_list = users_requests.fetch()
+
+        return users_list
+
+
 
 

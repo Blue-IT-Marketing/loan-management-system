@@ -34,7 +34,7 @@ export const UpdateCompany = async (uid, company_details) => {
 export const fetchCompany = async uid => {
 	const results = { status: false, payload: {}, error: {} };
 
-	await axios.get(routes.company_api_url+`${uid}`).then(response => {
+	await axios.get(routes.company_api_url+`/get-company/${uid}`).then(response => {
 		if(response.status == 200){
 			return response.data;
 		}else{

@@ -1,20 +1,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React,{Fragment,useState,useEffect,useContext} from 'react';
-import Switch from 'react-switch';
 import axios from 'axios';
 import {Utils} from '../../utilities';
-
 import { UserAccountContext } from '../../context/UserAccount/userAccountContext';
 import InlineMessage from '../Forms/InlineMessage';
 import InlineError from '../Forms/InlineError';
 import { routes } from '../../constants';
 import CompanyDetails from './CompanyDetails';
-import {myStore} from '../../localstorage';
 import {settings} from '../../constants';
-import {extended_user} from '../Auth/auth-constants';
+import {extended_user, extended_user_error} from '../Auth/auth-constants';
 
 import * as authAPI from '../Auth/auth-api';
+import * as usersAPI from './user-api';
+import * as companyAPI from './company-api';
+import DataTable from '../Tables/Tables';
 
 
 let user_errors_init = {
@@ -28,7 +28,130 @@ let inline_init ={
 	message_type : 'INFO',
 };
 
+function ManageUser({user}){
 
+	const[localUser,setLocalUser] = useState(extended_user);
+	const[errors,setError] = useState(extended_user_error);
+	const[inline,setInline] = useState({message:'',message_type:'info'});
+	const { user_account_state } = useContext(UserAccountContext);
+
+
+
+	const onInviteUser = e => {
+		console.log(e.target);
+		const user_detail = localUser;
+		const uid = user_account_state.user_account.uid;
+		usersAPI.sendInvite(uid,user_detail).then(response => {
+			if(response.status){
+				setInline({message:'invitation email was successfully sent',message_type:'info'});
+			}{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
+	};
+
+
+	useEffect(() => {
+		setLocalUser(user);
+		return () => {
+			setLocalUser(extended_user);
+		};
+	}, [user]);
+
+	return (
+		<Fragment>
+			<div className="box box-body">
+				<div className="box box-header">
+					<h3 className="box-title">Manage User</h3>
+				</div>
+
+				<form className="form-horizontal">
+					<div className="form-group">
+						<input
+							type="text"
+							className="form-control"
+							name="names"
+							value={localUser.names}
+							onChange={e =>
+								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+							}
+						/>
+						{errors.names_error ? (
+							<InlineError message={errors.names_error} />
+						) : (
+							''
+						)}
+					</div>
+					<div className="form-group">
+						<input
+							type="text"
+							className="form-control"
+							name="surname"
+							value={localUser.surname}
+							onChange={e =>
+								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+							}
+						/>
+						{errors.surname_error ? (
+							<InlineError message={errors.surname_error} />
+						) : (
+							''
+						)}
+					</div>
+
+					<div className="form-group">
+						<input
+							type="text"
+							className="form-control"
+							name="cell"
+							value={localUser.cell}
+							onChange={e =>
+								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+							}
+						/>
+						{errors.cell_error ? (
+							<InlineError message={errors.cell_error} />
+						) : (
+							''
+						)}
+					</div>
+
+					<div className="form-group">
+						<input
+							type="text"
+							className="form-control"
+							name="email"
+							value={localUser.email}
+							onChange={e =>
+								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+							}
+						/>
+						{errors.email_error ? (
+							<InlineError message={errors.email_error} />
+						) : (
+							''
+						)}
+					</div>
+
+					<div className="form-group">
+						<button
+							type="button"
+							className="btn btn-success btn-lg"
+							name="save"
+							onClick={e => onInviteUser(e)}
+						>
+							<strong>
+								<i className="fa fa-send-o"> </i> Invite
+							</strong>
+						</button>
+					</div>
+				</form>
+			</div>
+		</Fragment>
+	);
+}
 
 function PersonalDetails({user_account}){
 	
@@ -93,7 +216,7 @@ function PersonalDetails({user_account}){
 
 		const sent_user = JSON.stringify(personalDetails);
 		
-		console.dir("this is what i am sending", sent_user);
+		console.dir('this is what i am sending', sent_user);
 
 		authAPI.updateUser(sent_user).then(response => {
 			if(response.status){
@@ -133,7 +256,7 @@ function PersonalDetails({user_account}){
 		return () => {
 			setPersonalDetails(extended_user);
 		};
-	}, [])
+	}, []);
 
 	return (
 		<div className="box box-body">
@@ -240,21 +363,130 @@ function PersonalDetails({user_account}){
 	);
 }
 
-
-
-
 function ActiveUsers(){
+
 	const [users,setUsers] = useState([]);
+	const [datatable,setDataTable] = useState({});
+	const {user_account_state} = useContext(UserAccountContext);
+	const [user,setUser] = useState(extended_user);
 	
-	return(
+	const OpenUser = async uid => {		
+		setUser(users.find(user => user.uid === uid));
+	};
+
+	const prepareDataTable = async () => {
+		let rowdata = [];
+		
+		users.forEach(user => {
+
+			rowdata.push({
+				names : 
+				<span 					
+					className='lead-list'					
+					onClick={e => OpenUser(user.uid)}
+				> {user.names} </span>,
+				surname: user.surname,
+				cell: user.cell,
+				email: user.email,												
+			});
+		});		
+	
+		const data = {
+			columns: [
+				{
+					label: 'Names',
+					field: 'names',
+					sort: 'asc',
+					width: 150
+				},
+				{
+					label: 'Surname',
+					field: 'surname',
+					sort: 'asc',
+					width: 270
+				},
+				{
+					label: 'cell',
+					field: 'cell',
+					sort: 'asc',
+					width: 200
+				},
+				{
+					label: 'Email',
+					field: 'email',
+					sort: 'asc',
+					width: 100
+				}
+
+			],
+			rows: rowdata
+		};
+
+		return data;
+
+	};
+
+	const onSendInvite = async => {
+		const user_detail = user;
+		usersAPI.sendInvite(user_detail).then(response => {
+
+		});
+
+
+	};
+
+
+	useEffect(() => {
+		
+		const uid = user_account_state.user_account.uid;
+
+		companyAPI.fetchCompany(uid).then(response => {
+
+			if (response.status){
+
+				const company_id = response.payload.company_id;
+
+				usersAPI.fetchActiveUsers(uid,company_id).then(response => {
+					if(response.status){
+						setUsers(response.payload);
+					}else{
+						setUsers([]);
+					}
+				}).catch(error => {
+					setUsers([]);
+				});
+			}else{
+				console.log(response.error.message);
+			}
+		}).catch(error => {
+			console.log(error.message);
+		});
+		
+	  return () => {
+		
+	  };
+	}, []);
+
+	useEffect(() => {
+		prepareDataTable().then(results => {
+			setDataTable(results);
+		}).catch(error => {
+			console.log(error.message);
+		});
+
+		return () => {
+			setDataTable({});
+		};
+	}, [users]);
+	return (
 		<Fragment>
-			<div className='box box-body'>
-				<div className='box box-header'>
-					<h3 className='box-title'>						
-						<i className='fa fa-users'> </i> {' '}
-							Active Users						
+			<div className="box box-body">
+				<div className="box box-header">
+					<h3 className="box-title">
+						<i className="fa fa-users"> </i> Active Users
 					</h3>
 				</div>
+				{user.uid ? <ManageUser user={user} /> : <DataTable data={datatable} />}
 			</div>
 		</Fragment>
 	);
@@ -351,7 +583,7 @@ function AddUsers(){
 	}
 
 	async function onAddUser(e){
-		e.preventDefault();
+		
 		try{
 			axios.post(routes.user_api_url,JSON.stringify(user)).then(result => {
 				if(result.status === 200){

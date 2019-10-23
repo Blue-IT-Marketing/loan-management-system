@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 
 import React, { Fragment, useState, useEffect, useContext } from 'react';
@@ -9,14 +10,17 @@ import './Admin.css';
 import InlineError from '../Forms/InlineError';
 import { updateUser } from '../Auth/auth-api';
 import { Utils } from '../../utilities';
+import InlineMessage from '../Forms/InlineMessage';
 
 
 const UserManager = ({manage_user}) => {
 	const [user,setUser] = useState(extended_user);
 	const [errors,setError] = useState(extended_user_error);
+	const [inline,setInline] = useState({message:'',message_type:'info'});
+	const {user_account_state} = useContext(UserAccountContext);
 
 	const checkErrors = async e => {
-        e.preventDefault();
+		
 		let isError = false;
 
 		const check_names = () => {
@@ -57,10 +61,23 @@ const UserManager = ({manage_user}) => {
 		return isError;
 	};
     
-    const updateUser = async e => {
-        
-        
-    }
+	const onUpdateUser = async e => {
+		const uid = user_account_state.user_account.uid;
+		const sent_user = JSON.stringify(user);
+
+		await updateUser(sent_user).then(response => {
+			if(response.status){
+				setUser(response.payload);
+				setInline({message:'successfully updated user',message_type:'info'});
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
+
+		return true;
+	};
 
 	useEffect(() => {
 		setUser(manage_user);
@@ -157,13 +174,25 @@ const UserManager = ({manage_user}) => {
 							type='button'
 							className='btn btn-success'
 							name='save-user'
-							onClick={e => updateUser(e)}
+							onClick={e => checkErrors(e).then(isError => {
+								if(isError){
+									console.log(isError);
+									setInline({message:'there was an error processing form',message_type:'error'});
+								}else{
+									onUpdateUser(e).then(results => {
+                    					console.log(results);
+                  					});
+								}
+							}) }
 						>
-							<strong>
+							<strong> <i className='fa fa-save'> </i>{' '}
                                 Update User
 							</strong>
-
 						</button>
+					</div>
+
+					<div className='form-group'>
+						{inline.message ? <InlineMessage message={inline.message} message_type={inline.message_type} /> : ''}
 					</div>
 
 				</form>

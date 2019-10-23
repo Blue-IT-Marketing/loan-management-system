@@ -1,8 +1,5 @@
 /***
  * 
- * 
- * 
- * 
  */
 
 import React, { Component, useContext, createContext,useState,useEffect} from 'react';
@@ -24,7 +21,6 @@ export const loans_constant_init = {
 const LoansConstantContextProvider = props => {
     
 	const[loansConstant,setLoansConstant] = useState(loans_constant_init);
-
 	const {user_account_state} = useContext(UserAccountContext);
 
 	useEffect(() => {		
@@ -44,16 +40,16 @@ const LoansConstantContextProvider = props => {
 		return () => {
 			setLoansConstant(loans_constant_init);
 		};
+
 	}, []);
 
 	return(
+
 		<LoansConstantContext.Provider value={
 			{
 				loans_constant : loansConstant       
 			}
-		}>
-			{props.children}
-		</LoansConstantContext.Provider>
+		}>{props.children}</LoansConstantContext.Provider>
 	);
 };
 

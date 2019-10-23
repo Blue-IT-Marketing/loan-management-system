@@ -42,7 +42,8 @@ const PersonalDetails = () => {
 	};
 
 	const onCheckErrors = async e => {
-		console.log(e.target);
+
+		e.preventDefault();
 		let isError = false;
 
 
@@ -110,32 +111,19 @@ const PersonalDetails = () => {
 			return false;
 		};
 
-		if(await check_title()){
-			isError = true;
-		}
-		if(await check_surname()){
-			isError = true;
-		}
-		if(await check_names()){
-			isError = true;
-		}
-		if(await check_id()){
-			isError = true;
-		}
-		if(await check_dob()){
-			isError = true;
-		}
-		if(await check_nationality()){
-			isError = true;
-		}
+		const check = async () => {
 
-		// i need a bettr way to set uid
-		await setPersonalDetails({
-			...personal_details,
-			uid:user_account_state.user_account.uid
-		});
+			check_title() ? isError = true : isError = isError;			
+			check_surname() ? isError = true : isError = isError;							
+			check_names() ? isError = true : isError = isError;
+			check_id() ? isError = true : isError = isError;
+			check_dob() ? isError = true : isError = isError;			
+			check_nationality() ? isError = true : isError = isError;
 
-		return isError;
+			return isError;
+		};
+
+		return check();
 	};
 
 	const onSavePersonalDetails = async e => {
