@@ -29,14 +29,28 @@ let inline_init ={
 };
 
 function ManageUser({user}){
-
+	const [display,setDisplay] = useState('manage-user');
 	const[localUser,setLocalUser] = useState(extended_user);
 	const[errors,setError] = useState(extended_user_error);
 	const[inline,setInline] = useState({message:'',message_type:'info'});
 	const { user_account_state } = useContext(UserAccountContext);
 
 
+	const onBlockUser = e => {
+		const user_detail = localUser;
+		const uid = user_account_state.user_account.uid;
+		
+		usersAPI.blockUser(uid,user_detail).then(response => {
+			if(response.status){
+				setInline({message:'user successfully blocked',message_type:'info'})
+			}else{
+				setInline({message:response.error.message,message_type:'error'});
+			}
+		}).catch(error => {
+			setInline({message:error.message,message_type:'error'});
+		});
 
+	}
 	const onInviteUser = e => {
 		console.log(e.target);
 		const user_detail = localUser;
@@ -65,89 +79,145 @@ function ManageUser({user}){
 			<div className="box box-body">
 				<div className="box box-header">
 					<h3 className="box-title">Manage User</h3>
-				</div>
 
-				<form className="form-horizontal">
-					<div className="form-group">
-						<input
-							type="text"
-							className="form-control"
-							name="names"
-							value={localUser.names}
-							onChange={e =>
-								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
-							}
-						/>
-						{errors.names_error ? (
-							<InlineError message={errors.names_error} />
-						) : (
-							''
-						)}
-					</div>
-					<div className="form-group">
-						<input
-							type="text"
-							className="form-control"
-							name="surname"
-							value={localUser.surname}
-							onChange={e =>
-								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
-							}
-						/>
-						{errors.surname_error ? (
-							<InlineError message={errors.surname_error} />
-						) : (
-							''
-						)}
-					</div>
-
-					<div className="form-group">
-						<input
-							type="text"
-							className="form-control"
-							name="cell"
-							value={localUser.cell}
-							onChange={e =>
-								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
-							}
-						/>
-						{errors.cell_error ? (
-							<InlineError message={errors.cell_error} />
-						) : (
-							''
-						)}
-					</div>
-
-					<div className="form-group">
-						<input
-							type="text"
-							className="form-control"
-							name="email"
-							value={localUser.email}
-							onChange={e =>
-								setLocalUser({ ...localUser, [e.target.name]: e.target.value })
-							}
-						/>
-						{errors.email_error ? (
-							<InlineError message={errors.email_error} />
-						) : (
-							''
-						)}
-					</div>
-
-					<div className="form-group">
+					<div className='box-tools'>
 						<button
-							type="button"
-							className="btn btn-success btn-lg"
-							name="save"
-							onClick={e => onInviteUser(e)}
+							type='button'
+							className='btn btn-box-tool'
+							name='blockuser'
+							onClick={e => setDisplay('block-user')}
 						>
-							<strong>
-								<i className="fa fa-send-o"> </i> Invite
-							</strong>
+							<i className='fa fa-cut'> </i>{' '}Block User		
 						</button>
 					</div>
-				</form>
+				</div>
+				{
+					display === 'manage-user' ?
+
+				
+						<form className="form-horizontal">
+							<div className="form-group">
+								<input
+									type="text"
+									className="form-control"
+									name="names"
+									value={localUser.names}
+									onChange={e =>
+										setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+									}
+								/>
+								{errors.names_error ? (
+									<InlineError message={errors.names_error} />
+								) : (
+									''
+								)}
+							</div>
+							<div className="form-group">
+								<input
+									type="text"
+									className="form-control"
+									name="surname"
+									value={localUser.surname}
+									onChange={e =>
+										setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+									}
+								/>
+								{errors.surname_error ? (
+									<InlineError message={errors.surname_error} />
+								) : (
+									''
+								)}
+							</div>
+
+							<div className="form-group">
+								<input
+									type="text"
+									className="form-control"
+									name="cell"
+									value={localUser.cell}
+									onChange={e =>
+										setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+									}
+								/>
+								{errors.cell_error ? (
+									<InlineError message={errors.cell_error} />
+								) : (
+									''
+								)}
+							</div>
+
+							<div className="form-group">
+								<input
+									type="text"
+									className="form-control"
+									name="email"
+									value={localUser.email}
+									onChange={e =>
+										setLocalUser({ ...localUser, [e.target.name]: e.target.value })
+									}
+								/>
+								{errors.email_error ? (
+									<InlineError message={errors.email_error} />
+								) : (
+									''
+								)}
+							</div>
+
+							<div className="form-group">
+								<button
+									type="button"
+									className="btn btn-success btn-lg"
+									name="save"
+									onClick={e => onInviteUser(e)}
+								>
+									<strong>
+										<i className="fa fa-send-o"> </i> Invite
+									</strong>
+								</button>
+
+							</div>
+						</form>
+						: null}
+				{
+					display === 'block-user' ?
+						<form className='form-horizontal'>
+							<div className='form-group'>
+								<input 
+									type='text' 
+									className='form-control'
+									name='names'
+									value={localUser.names}
+								/>
+							</div>
+							<div className='form-group'>
+								<input 
+									type='text' 
+									className='form-control'
+									name='surname'
+									value={localUser.surname}
+								/>
+							</div>
+							<div className='form-group'>
+								<input 
+									type='text' 
+									className='form-control'
+									name='cell'
+									value={localUser.cell}
+								/>
+							</div>
+
+							<div className='form-group'>
+								<button
+									type='button'
+									className='btn btn-danger btn-lg'
+									onClick={e => onBlockUser(e)}
+
+								><i className='fa fa-cut'> </i> {' '} Block User
+								</button>
+							</div>
+
+						</form>: null
+				}
 			</div>
 		</Fragment>
 	);
@@ -729,7 +799,7 @@ function AddUsers(){
 }
 
 function UserDetails(){
-	const [display, setDisplay] = useState('add-users');
+	const [display, setDisplay] = useState('active-users');
 	const [userDetailsMenu, setMenu] = useState({ menu: false });
 
 	const showDropdownMenu = e => {
@@ -766,13 +836,6 @@ function UserDetails(){
 							{userDetailsMenu.menu ? (
 								<ul className="dropmenu">
 									<li className="btn btn-block droplink"
-										name="add-users"
-										onClick={() => setDisplay('add-users')}
-									>
-										<i className="fa fa-user-plus"> </i>
-									Add Users
-									</li>
-									<li className="btn btn-block droplink"
 										name="active-users"
 										onClick={() => setDisplay('active-users')}
 									>
@@ -780,18 +843,18 @@ function UserDetails(){
 											Active Users
 									</li>
 									<li className="btn btn-block droplink"
-										name="blocked-users"
-										onClick={() => setDisplay('blocked-users')}
-									>
-										<i className="fa fa-user-secret"> </i>
-										Blocked Users
-									</li>
-									<li className="btn btn-block droplink"
 										name="add-users"
 										onClick={() => setDisplay('add-users')}
 									>
 										<i className="fa fa-user-plus"> </i>
 									Add Users
+									</li>
+									<li className="btn btn-block droplink"
+										name="blocked-users"
+										onClick={() => setDisplay('blocked-users')}
+									>
+										<i className="fa fa-user-secret"> </i>
+										Blocked Users
 									</li>
 
 

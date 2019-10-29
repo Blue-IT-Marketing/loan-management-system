@@ -73,3 +73,26 @@ export const sendInvite = async (uid,user_detail) => {
 
 	return results;
 };
+
+
+export const blockUser = async (uid,user_detail) => {
+	const results = { status: true, payload: {}, error: {} };
+
+	await axios.put(routes.api_user_endpoint + `/block_user/${uid}`, user_detail).then(response => {
+		if(response.status === 200){
+			return response.data;
+		}else{
+			throw new Error('error blocking user');
+		}
+	}).then(user_detail => {
+		results.status = true;
+		results.payload = {...user_detail};
+		results.error = {};
+	}).catch(error => {
+		results.status = false;
+		results.payload = {};
+		results.error = {...error};
+	});
+
+	return results;
+};

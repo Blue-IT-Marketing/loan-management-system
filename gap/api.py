@@ -89,11 +89,7 @@ class APIRouterHandler(webapp2.RequestHandler):
 
                     if len(personal_details) > 0:
                         response_data = personal_details[0].to_dict()
-
-                
-
-
-
+            
             else:
                 # default get loans
                 loans_request = LoanApplicantDetails.query()
@@ -281,10 +277,7 @@ class APIRouterHandler(webapp2.RequestHandler):
                 status_int = 500
                 response_data = {
                     'message': 'unable to understand your request'}
-
-
-
-                
+    
         else:
             response_data = {'message':'general error cannot understand request'}
             status_int = 501
@@ -305,18 +298,40 @@ class APIRouterHandler(webapp2.RequestHandler):
         logging.info('api running')
 
         if 'user' in route:
-            user_details = json.loads(self.request.body)
 
-            user_instance = User()
-            this_user = user_instance.addUser(json_user=user_details)
 
-            response_data = {}
-            if this_user != '':
-                response_data = this_user.to_dict()
+
+            if 'block-user' in route:
+                user_details = json.loads(self.request.body)
+
+                uid = route[len(route) - 1]
+
+                user_instance = User()
+                this_user = user_instance.getUser(uid=uid)
+                response_data = {}
+                if this_user.is_admin:                    
+                    response = user_instance.blockUser(uid=user_details['uid'])
+                    if response != '':
+                        response_data = response.to_dict()
+                    else:
+                        status_int = 500
+                        response_data = {'message':'error user not found'}
+                else:
+                    status_int = 500
+                    response_data = {'message':'you are not authorized to perform this action'}
+
             else:
-                status_int = 500
-                response_data = {'message': 'user not updated or created'}
+                user_details = json.loads(self.request.body)
 
+                user_instance = User()
+                this_user = user_instance.addUser(json_user=user_details)
+
+                response_data = {}
+                if this_user != '':
+                    response_data = this_user.to_dict()
+                else:
+                    status_int = 500
+                    response_data = {'message': 'user not updated or created'}
         else:
             status_int = 404
             response_data = {'message': 'request not found'}

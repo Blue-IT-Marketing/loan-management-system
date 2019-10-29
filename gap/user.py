@@ -2,6 +2,12 @@
 import os,logging,datetime,string,random
 from google.appengine.ext import ndb
 
+from google.appengine.api import urlfetch
+
+email_api_base_url = 'https://sa-sms.herokuapp.com'
+email_api_endpoint = '/api/send-mail'
+# i need a method to obtain api_key
+email_apiKey = ''
 
 class User(ndb.Expando):
     # TODO implement this in every user
@@ -15,11 +21,47 @@ class User(ndb.Expando):
     password = ndb.StringProperty() 
     repeatpassword = ndb.StringProperty() 
     is_admin = ndb.BooleanProperty(default=False)
+    user_blocked = ndb.BooleanProperty(default=False)
+
+    def blockUser(self,uid):
+
+        user_requests = User.query(User.uid == uid)
+        users_list = user_requests.fetch()
+
+        if len(users_list) > 0 :
+            user = users_list[0]
+            user.user_blocked = True
+            user.put()
+
+            return user
+        else:
+            return ''
+
+
+        
 
     def sendInvite(self,email_details):
         logging.info(email_details)
         # TODO- create a function to send emails via requests, through my sa-sms api
-        return True
+        request_url = email_api_base_url + email_api_endpoint        
+
+        headers  = {'Content-Type' : 'application/json'}
+        try:
+            result = urlfetch.fetch(url=request_url,
+                                    payload=email_details,
+                                    method=urlfetch.POST,
+                                    headers=headers,
+                                    validate_certificate=True)
+
+            if result.status_code == 200:
+                response = json.loads(result.content)
+            else:
+                response = ''
+
+        except urlfetch.Error:
+            response = ''
+        
+        return response
 
     def create_employee_code(self, size=6, chars=string.ascii_lowercase + string.digits):
         return ''.join(random.choice(chars) for x in range(size))

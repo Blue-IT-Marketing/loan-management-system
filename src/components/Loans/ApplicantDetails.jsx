@@ -127,9 +127,8 @@ const PersonalDetails = () => {
 	};
 
 	const onSavePersonalDetails = async e => {
+		console.log('loans constant',loans_constant);
 		const applicant_details = JSON.stringify(personal_details);
-
-		
 
 		await loansAPI.savePersonalDetails(applicant_details).then(response => {
 			if (response.status){
@@ -146,7 +145,9 @@ const PersonalDetails = () => {
 
 	useEffect(() => {
 		// remember loans id is managed by a context
-	  	const loan_id = loans_constant.loan_id;
+		const loan_id = loans_constant.loan_id;
+		console.log('LOAN ID',loan_id);
+
 		loansAPI.getApplicantPersonalDetails(loan_id).then(response => {
 			if(response.status){
 				setPersonalDetails({
